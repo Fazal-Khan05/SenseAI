@@ -18,9 +18,11 @@ const MODEL_DEST = path.join(root, 'public/models');
 // makes no runtime network calls and works offline.
 // These replaced the MediaPipe WASM build: 4.1MB of weights instead of an
 // 11.2MB WASM runtime plus a 7.5MB .task model.
+// "full" rather than "lite": the lite detector missed hands outright in
+// testing. Recall matters more here than the extra few MB.
 const HAND_MODELS = [
-    { name: 'hand-detector', url: 'https://tfhub.dev/mediapipe/tfjs-model/handpose_3d/detector/lite/1' },
-    { name: 'hand-landmark', url: 'https://tfhub.dev/mediapipe/tfjs-model/handpose_3d/landmark/lite/1' },
+    { name: 'hand-detector', url: 'https://tfhub.dev/mediapipe/tfjs-model/handpose_3d/detector/full/1' },
+    { name: 'hand-landmark', url: 'https://tfhub.dev/mediapipe/tfjs-model/handpose_3d/landmark/full/1' },
 ];
 
 // COCO-SSD normally streams its weights from Google's CDN on every page load

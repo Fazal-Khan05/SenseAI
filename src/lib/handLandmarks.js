@@ -22,8 +22,9 @@ const LANDMARK_URL = '/models/hand-landmark/model.json';
 // Weight shards, pulled first so the download reports real progress; TFJS then
 // finds them in the HTTP cache. Shares are the two files' relative sizes.
 const WEIGHTS = [
-    { url: '/models/hand-detector/group1-shard1of1.bin', share: 0.49 },
-    { url: '/models/hand-landmark/group1-shard1of1.bin', share: 0.51 },
+    { url: '/models/hand-detector/group1-shard1of1.bin', share: 0.30 },
+    { url: '/models/hand-landmark/group1-shard1of2.bin', share: 0.55 },
+    { url: '/models/hand-landmark/group1-shard2of2.bin', share: 0.15 },
 ];
 
 let detectorPromise = null;
@@ -46,7 +47,7 @@ export function loadHandLandmarker(onProgress) {
             handPoseDetection.SupportedModels.MediaPipeHands,
             {
                 runtime: 'tfjs',
-                modelType: 'lite',
+                modelType: 'full',
                 maxHands: 1,
                 detectorModelUrl: DETECTOR_URL,
                 landmarkModelUrl: LANDMARK_URL,
@@ -88,7 +89,13 @@ async function warmUp(detector) {
  * (0..1), matching what the rest of the pipeline expects.
  */
 export async function detectHand(detector, video) {
-    const hands = await detector.estimateHands(video, { flipHorizontal: false });
+    const hands = await detector.estimateHands(video, {
+        flipHorizontal: false,
+        staticImageMode: false,
+    });
+
+    lastScore = hands?.[0]?.score ?? 0;
+
     const hand = hands?.[0];
     if (!hand?.keypoints?.length) return null;
 
@@ -96,6 +103,13 @@ export async function detectHand(detector, video) {
     const h = video.videoHeight || 1;
     return hand.keypoints.map(k => ({ x: k.x / w, y: k.y / h }));
 }
+
+/** Confidence of the most recent detection, surfaced for diagnosis. */
+export let lastScore = 0;
+
+/** Set when inference throws, so a broken detector is visible instead of silent. */
+export let lastError = null;
+export function noteError(err) { lastError = err?.message ?? String(err); }
 
 /** Warm the model before the user reaches the page. */
 export function prefetchHandLandmarker() {

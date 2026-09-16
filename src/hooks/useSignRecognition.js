@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { loadHandLandmarker, detectHand, JOINTS } from '../lib/handLandmarks';
+import * as handLib from '../lib/handLandmarks';
+import { loadHandLandmarker, detectHand, noteError, JOINTS } from '../lib/handLandmarks';
 import { classifyShape } from '../lib/handShapes';
 import { createMotionTracker } from '../lib/motionTracker';
 import { matchSign } from '../lib/wordSigns';
@@ -35,6 +36,7 @@ export function useSignRecognition() {
     // TFJS inference is async, so a frame can arrive mid-detection; without
     // this guard the queue backs up and the readings arrive out of order.
     const busyRef = useRef(false);
+    const errorsRef = useRef(0);
 
     const phaseRef = useRef('idle');
     const strokeStartRef = useRef(0);
@@ -75,8 +77,14 @@ export function useSignRecognition() {
         let hand;
         try {
             hand = await detectHand(landmarker, video);
-        } catch {
+        } catch (err) {
+            // Swallowing this silently made a broken detector look exactly
+            // like "no hand in frame", which cost a long debugging detour.
+            noteError(err);
+            errorsRef.current += 1;
+            if (errorsRef.current <= 3) console.error('[sign-detection] inference failed:', err);
             busyRef.current = false;
+            setLive({ hand: false, shape: null, phase: 'error', progress: 0 });
             return;
         }
         busyRef.current = false;
@@ -86,7 +94,7 @@ export function useSignRecognition() {
             strokeShapesRef.current = [];
             holdShapeRef.current = null;
             motionRef.current.clear();
-            setLive({ hand: false, shape: null, phase: 'idle', progress: 0 });
+            setLive({ hand: false, shape: null, phase: 'idle', progress: 0, score: handLib.lastScore });
             return;
         }
 
@@ -158,6 +166,7 @@ export function useSignRecognition() {
             shape: shape?.shape ?? null,
             phase: phaseRef.current,
             progress,
+            score: handLib.lastScore,
         });
     }, [commit]);
 

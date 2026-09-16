@@ -26,7 +26,7 @@ runtime** and works fully offline. That matters at demo time.
 
 ### If loading feels slow
 
-A first visit downloads ~3.9MB of hand-model weights, then compiles them for
+A first visit downloads ~7.7MB of hand-model weights, then compiles them for
 your GPU; both are cached afterwards, and the page shows real progress for
 each. Hand tracking runs on TensorFlow.js (WebGL), ~45-60ms per inference.
 

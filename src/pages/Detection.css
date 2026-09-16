@@ -597,3 +597,7 @@
     border-radius: var(--radius-full);
     transition: width 200ms linear;
 }
+
+.live-hint.error {
+    color: var(--error);
+}

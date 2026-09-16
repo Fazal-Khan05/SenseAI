@@ -67,7 +67,14 @@ export default function SignDetection() {
                                 <div className="live-read" aria-live="off">
                                     {modelState !== 'ready'
                                         ? <span className="live-hint">Camera is live — detection starts once the model finishes loading</span>
-                                        : !live.hand && <span className="live-hint">Show your hand to the camera</span>}
+                                        : live.phase === 'error'
+                                            ? <span className="live-hint error">Detection failed — see the browser console</span>
+                                            : !live.hand && (
+                                                <span className="live-hint">
+                                                    Show your hand to the camera
+                                                    {live.score > 0 && <> · best match {Math.round(live.score * 100)}%</>}
+                                                </span>
+                                            )}
 
                                     {live.hand && (
                                         <>
