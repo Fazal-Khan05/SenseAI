@@ -24,5 +24,4 @@ dist-ssr
 *.sw?
 
 # Fetched on install by scripts/setup-models.mjs (large binaries)
-public/mediapipe
 public/models

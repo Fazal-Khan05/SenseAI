@@ -18,25 +18,27 @@ If model assets are missing (`Hand-tracking model failed to load`):
 npm run setup:models
 ```
 
-That copies the MediaPipe WASM runtime out of `node_modules` and downloads the
-hand-landmark and COCO-SSD models into `public/` (~37MB total). All of it is
-gitignored — large binaries, fetched rather than committed.
+That downloads the hand-pose and COCO-SSD models into `public/` (~21MB). They
+are gitignored — large binaries, fetched rather than committed.
 
 Both models are served locally, so detection makes **no network requests at
 runtime** and works fully offline. That matters at demo time.
 
 ### If loading feels slow
 
-Model init is ~1.5s with the GPU delegate and ~15s if the browser falls back to
-CPU. The page says which is happening. A CPU fallback usually means hardware
-acceleration is disabled in the browser — worth checking before a demo.
+A first visit downloads ~3.9MB of hand-model weights, then compiles them for
+your GPU; both are cached afterwards, and the page shows real progress for
+each. Hand tracking runs on TensorFlow.js (WebGL), ~45-60ms per inference.
+
+If it is slow, check hardware acceleration is enabled — the WebGL backend is
+what keeps inference under 60ms.
 
 ## What works today
 
 | Feature | Status |
 |---|---|
 | Object detection | **Real.** COCO-SSD, 80 pre-trained classes, live boxes |
-| Hand tracking | **Real.** MediaPipe HandLandmarker, 21 landmarks |
+| Hand tracking | **Real.** MediaPipe Hands on the TF.js runtime, 21 landmarks |
 | Word signs | **Real.** 11 signs via handshape + motion rules, no training needed |
 | Fingerspelling | **Removed.** Spelling letter-by-letter was too slow to build sentences |
 | Gloss → English | **Real.** Rule-based, 17 passing tests |
@@ -85,7 +87,7 @@ register you can see which half is wrong.
 src/
   lib/
     handJoints.js        landmark indices (no MediaPipe import — keeps bundles small)
-    handLandmarks.js     MediaPipe HandLandmarker loader
+    handLandmarks.js     hand detector (MediaPipe Hands on the TF.js runtime)
     handFeatures.js      scale/rotation-tolerant pose descriptor + normalisation
     handShapes.js        handshape classifier (nearest template)
     motionTracker.js     rolling window -> static / linear / circular / oscillate

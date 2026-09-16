@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { loadHandLandmarker, JOINTS } from '../lib/handLandmarks';
+import { loadHandLandmarker, detectHand, JOINTS } from '../lib/handLandmarks';
 import { classifyShape } from '../lib/handShapes';
 import { createMotionTracker } from '../lib/motionTracker';
 import { matchSign } from '../lib/wordSigns';
@@ -32,6 +32,9 @@ export function useSignRecognition() {
     const landmarkerRef = useRef(null);
     const motionRef = useRef(createMotionTracker());
     const lastRunRef = useRef(0);
+    // TFJS inference is async, so a frame can arrive mid-detection; without
+    // this guard the queue backs up and the readings arrive out of order.
+    const busyRef = useRef(false);
 
     const phaseRef = useRef('idle');
     const strokeStartRef = useRef(0);
@@ -63,19 +66,20 @@ export function useSignRecognition() {
         motionRef.current.clear();
     }, []);
 
-    const onFrame = useCallback((video, ts) => {
+    const onFrame = useCallback(async (video, ts) => {
         const landmarker = landmarkerRef.current;
-        if (!landmarker || ts - lastRunRef.current < DETECT_INTERVAL) return;
+        if (!landmarker || busyRef.current || ts - lastRunRef.current < DETECT_INTERVAL) return;
         lastRunRef.current = ts;
+        busyRef.current = true;
 
-        let result;
+        let hand;
         try {
-            result = landmarker.detectForVideo(video, ts);
+            hand = await detectHand(landmarker, video);
         } catch {
-            return;   // MediaPipe rejects out-of-order timestamps
+            busyRef.current = false;
+            return;
         }
-
-        const hand = result?.landmarks?.[0];
+        busyRef.current = false;
 
         if (!hand) {
             phaseRef.current = 'idle';

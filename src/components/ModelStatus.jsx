@@ -34,7 +34,7 @@ export default function ModelStatus({ state, label, slowHint, progress = 0 }) {
                 <span>
                     {progress > 0 && progress < 1
                         ? `Downloading ${label} — ${pct}%`
-                        : `Preparing ${label}…`}
+                        : `Preparing ${label} (compiling shaders)…`}
                 </span>
                 {elapsed > 0 && <span className="model-elapsed">{elapsed}s</span>}
             </div>
@@ -47,7 +47,7 @@ export default function ModelStatus({ state, label, slowHint, progress = 0 }) {
 
             <span className="model-slow">
                 {/* First visit only: ~19MB of model files, then cached. */}
-                First visit downloads the detection models (~19MB). They are cached afterwards.
+                First visit downloads the detection models (~4MB) and compiles them for your GPU. Both are cached afterwards.
                 {elapsed >= 8 && slowHint && <> {slowHint}</>}
             </span>
         </div>

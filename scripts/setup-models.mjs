@@ -1,29 +1,27 @@
 /**
- * Copies the MediaPipe WASM runtime out of node_modules and downloads the
- * hand-landmark model into public/. Both are large binaries, so they are
- * gitignored and fetched on install instead of being committed.
+ * Downloads the hand-pose and object-detection models into public/. They are
+ * large binaries, so they are gitignored and fetched on install rather than
+ * committed.
  *
  * Runs automatically via `postinstall`; re-run with `npm run setup:models`.
  */
-import { mkdir, copyFile, access, writeFile, readFile, stat } from 'node:fs/promises';
+import { mkdir, access, writeFile, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = process.cwd();
 
 // The package blocks deep `exports` access, so resolve the folder directly.
-const WASM_SRC = path.join(root, 'node_modules/@mediapipe/tasks-vision/wasm');
-const WASM_DEST = path.join(root, 'public/mediapipe/wasm');
 
-// Only the SIMD build is needed; the nosimd fallback doubles the payload.
-const WASM_FILES = ['vision_wasm_internal.js', 'vision_wasm_internal.wasm'];
-
-const MODELS = [
-    {
-        file: 'hand_landmarker.task',
-        url: 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',
-    },
-];
 const MODEL_DEST = path.join(root, 'public/models');
+
+// MediaPipe Hands, TFJS runtime, "lite" weights. Mirrored locally so the app
+// makes no runtime network calls and works offline.
+// These replaced the MediaPipe WASM build: 4.1MB of weights instead of an
+// 11.2MB WASM runtime plus a 7.5MB .task model.
+const HAND_MODELS = [
+    { name: 'hand-detector', url: 'https://tfhub.dev/mediapipe/tfjs-model/handpose_3d/detector/lite/1' },
+    { name: 'hand-landmark', url: 'https://tfhub.dev/mediapipe/tfjs-model/handpose_3d/landmark/lite/1' },
+];
 
 // COCO-SSD normally streams its weights from Google's CDN on every page load
 // (13 requests). Mirroring them locally makes object detection start faster
@@ -33,23 +31,32 @@ const COCO_DEST = path.join(root, 'public/models/coco-ssd');
 
 const exists = (p) => access(p).then(() => true, () => false);
 
-async function copyWasm() {
-    await mkdir(WASM_DEST, { recursive: true });
-    for (const f of WASM_FILES) {
-        await copyFile(path.join(WASM_SRC, f), path.join(WASM_DEST, f));
-        console.log('  wasm  ', f);
-    }
-}
+/** Downloads a TFJS graph model (model.json plus its weight shards). */
+async function fetchTfjsModel({ name, url }) {
+    const dir = path.join(MODEL_DEST, name);
+    await mkdir(dir, { recursive: true });
 
-async function fetchModels() {
-    await mkdir(MODEL_DEST, { recursive: true });
-    for (const { file, url } of MODELS) {
-        const dest = path.join(MODEL_DEST, file);
-        if (await exists(dest)) { console.log('  model  ', file, '(cached)'); continue; }
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`${file}: ${res.status} ${res.statusText}`);
+    const manifestPath = path.join(dir, 'model.json');
+    let manifest;
+
+    if (await exists(manifestPath)) {
+        manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+        console.log('  hand  ', `${name}/model.json (cached)`);
+    } else {
+        const res = await fetch(`${url}/model.json?tfjs-format=file`);
+        if (!res.ok) throw new Error(`${name} model.json: ${res.status}`);
+        manifest = await res.json();
+        await writeFile(manifestPath, JSON.stringify(manifest));
+        console.log('  hand  ', `${name}/model.json`);
+    }
+
+    for (const shard of (manifest.weightsManifest || []).flatMap(w => w.paths)) {
+        const dest = path.join(dir, shard);
+        if (await exists(dest)) { console.log('  hand  ', `${name}/${shard} (cached)`); continue; }
+        const res = await fetch(`${url}/${shard}?tfjs-format=file`);
+        if (!res.ok) throw new Error(`${name}/${shard}: ${res.status}`);
         await writeFile(dest, Buffer.from(await res.arrayBuffer()));
-        console.log('  model  ', file);
+        console.log('  hand  ', `${name}/${shard}`);
     }
 }
 
@@ -88,21 +95,21 @@ async function fetchCocoSsd() {
  * transparently, so these raw sizes are the right denominator.
  */
 async function writeManifest() {
-    const entries = {
-        '/mediapipe/wasm/vision_wasm_internal.wasm': path.join(WASM_DEST, 'vision_wasm_internal.js').replace('.js', '.wasm'),
-        '/models/hand_landmarker.task': path.join(MODEL_DEST, 'hand_landmarker.task'),
-    };
     const sizes = {};
-    for (const [url, file] of Object.entries(entries)) {
-        sizes[url] = (await stat(file)).size;
+    for (const { name } of HAND_MODELS) {
+        const dir = path.join(MODEL_DEST, name);
+        const manifest = JSON.parse(await readFile(path.join(dir, 'model.json'), 'utf8'));
+        for (const shard of (manifest.weightsManifest || []).flatMap(w => w.paths)) {
+            sizes[`/models/${name}/${shard}`] = (await stat(path.join(dir, shard))).size;
+        }
     }
     await writeFile(path.join(MODEL_DEST, 'sizes.json'), JSON.stringify(sizes, null, 2));
     console.log('  sizes  sizes.json');
 }
 
 try {
-    await copyWasm();
-    await fetchModels();
+    await mkdir(MODEL_DEST, { recursive: true });
+    for (const m of HAND_MODELS) await fetchTfjsModel(m);
     await fetchCocoSsd();
     await writeManifest();
     console.log('Model assets ready.');
