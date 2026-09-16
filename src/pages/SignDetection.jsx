@@ -27,7 +27,7 @@ export default function SignDetection() {
     const [speechOn, setSpeechOn] = useState(false);
     const [copied, setCopied] = useState(false);
 
-    const { glosses, live, modelState, onFrame, reset, undo, pushGloss } = useSignRecognition();
+    const { glosses, live, modelState, progress, onFrame, reset, undo, pushGloss } = useSignRecognition();
     const { videoRef, status, error, start, stop, isLive } = useCamera(onFrame);
 
     const sentence = useMemo(() => glossToSentence(glosses), [glosses]);
@@ -65,7 +65,9 @@ export default function SignDetection() {
 
                             {isLive && (
                                 <div className="live-read" aria-live="off">
-                                    {!live.hand && <span className="live-hint">Show your hand to the camera</span>}
+                                    {modelState !== 'ready'
+                                        ? <span className="live-hint">Camera is live — detection starts once the model finishes loading</span>
+                                        : !live.hand && <span className="live-hint">Show your hand to the camera</span>}
 
                                     {live.hand && (
                                         <>
@@ -89,7 +91,8 @@ export default function SignDetection() {
                             <ModelStatus
                                 state={modelState}
                                 label="hand tracking"
-                                slowHint="Falling back to CPU — this can take ~15s on the first load."
+                                progress={progress}
+                                slowHint="If this stalls, the browser may be on the slow CPU path."
                             />
 
                             <div className="sentence-builder">

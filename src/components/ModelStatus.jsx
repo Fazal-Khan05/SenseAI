@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
  * broken. Showing elapsed time proves it is still working, and a hint appears
  * once it runs long enough to suggest a slow (CPU) path.
  */
-export default function ModelStatus({ state, label, slowHint }) {
+export default function ModelStatus({ state, label, slowHint, progress = 0 }) {
     const [elapsed, setElapsed] = useState(0);
 
     useEffect(() => {
@@ -25,11 +25,31 @@ export default function ModelStatus({ state, label, slowHint }) {
         );
     }
 
+    const pct = Math.round(progress * 100);
+
     return (
-        <p className="model-note" role="status">
-            <span className="model-dot" />
-            Loading {label}… {elapsed > 0 && `${elapsed}s`}
-            {elapsed >= 4 && slowHint && <span className="model-slow">{slowHint}</span>}
-        </p>
+        <div className="model-note" role="status">
+            <div className="model-note-row">
+                <span className="model-dot" />
+                <span>
+                    {progress > 0 && progress < 1
+                        ? `Downloading ${label} — ${pct}%`
+                        : `Preparing ${label}…`}
+                </span>
+                {elapsed > 0 && <span className="model-elapsed">{elapsed}s</span>}
+            </div>
+
+            {progress > 0 && (
+                <div className="model-progress">
+                    <div className="model-progress-fill" style={{ width: `${pct}%` }} />
+                </div>
+            )}
+
+            <span className="model-slow">
+                {/* First visit only: ~19MB of model files, then cached. */}
+                First visit downloads the detection models (~19MB). They are cached afterwards.
+                {elapsed >= 8 && slowHint && <> {slowHint}</>}
+            </span>
+        </div>
     );
 }

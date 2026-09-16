@@ -42,12 +42,13 @@ export function useSignRecognition() {
     const holdSinceRef = useRef(0);
 
     const [modelState, setModelState] = useState('loading');
+    const [progress, setProgress] = useState(0);
     const [glosses, setGlosses] = useState([]);
     const [live, setLive] = useState({ hand: false, shape: null, phase: 'idle', progress: 0 });
 
     useEffect(() => {
         let cancelled = false;
-        loadHandLandmarker()
+        loadHandLandmarker(p => { if (!cancelled) setProgress(p); })
             .then(l => { if (!cancelled) { landmarkerRef.current = l; setModelState('ready'); } })
             .catch(() => { if (!cancelled) setModelState('error'); });
         return () => { cancelled = true; };
@@ -168,7 +169,7 @@ export function useSignRecognition() {
     const undo = useCallback(() => setGlosses(g => g.slice(0, -1)), []);
     const pushGloss = useCallback((gloss) => setGlosses(g => [...g, gloss]), []);
 
-    return { glosses, live, modelState, onFrame, reset, undo, pushGloss };
+    return { glosses, live, modelState, progress, onFrame, reset, undo, pushGloss };
 }
 
 /** Most frequent shape across a stroke — steadier than any single frame. */
