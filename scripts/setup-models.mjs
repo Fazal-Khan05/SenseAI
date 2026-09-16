@@ -5,7 +5,7 @@
  *
  * Runs automatically via `postinstall`; re-run with `npm run setup:models`.
  */
-import { mkdir, copyFile, access, writeFile, readFile } from 'node:fs/promises';
+import { mkdir, copyFile, access, writeFile, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = process.cwd();
@@ -81,10 +81,30 @@ async function fetchCocoSsd() {
     }
 }
 
+/**
+ * Records uncompressed byte sizes. Hosts that serve these compressed (Vercel
+ * sends brotli) drop Content-Length, so the browser cannot size the download
+ * and a progress bar has nothing to divide by. fetch() decompresses
+ * transparently, so these raw sizes are the right denominator.
+ */
+async function writeManifest() {
+    const entries = {
+        '/mediapipe/wasm/vision_wasm_internal.wasm': path.join(WASM_DEST, 'vision_wasm_internal.js').replace('.js', '.wasm'),
+        '/models/hand_landmarker.task': path.join(MODEL_DEST, 'hand_landmarker.task'),
+    };
+    const sizes = {};
+    for (const [url, file] of Object.entries(entries)) {
+        sizes[url] = (await stat(file)).size;
+    }
+    await writeFile(path.join(MODEL_DEST, 'sizes.json'), JSON.stringify(sizes, null, 2));
+    console.log('  sizes  sizes.json');
+}
+
 try {
     await copyWasm();
     await fetchModels();
     await fetchCocoSsd();
+    await writeManifest();
     console.log('Model assets ready.');
 } catch (err) {
     console.error('\nsetup-models failed:', err.message);

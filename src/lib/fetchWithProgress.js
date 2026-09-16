@@ -5,14 +5,29 @@
  * for twenty seconds reads as a hung page, so every large asset is pulled
  * through here and the real percentage is shown.
  *
- * Falls back to a plain fetch when the response is not streamable or has no
- * declared length (some proxies drop Content-Length on compressed responses).
+ * Hosts that compress these responses (Vercel sends brotli) omit
+ * Content-Length, which would leave the bar with nothing to divide by. The
+ * sizes recorded at build time in /models/sizes.json cover that case: fetch()
+ * decompresses transparently, so the uncompressed size is the right
+ * denominator for the bytes actually arriving.
  */
+let sizeTable = null;
+
+async function expectedSize(url) {
+    if (sizeTable === null) {
+        try {
+            const res = await fetch('/models/sizes.json');
+            sizeTable = res.ok ? await res.json() : {};
+        } catch { sizeTable = {}; }
+    }
+    return sizeTable[url] ?? 0;
+}
+
 export async function fetchWithProgress(url, onProgress) {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`${url}: ${res.status} ${res.statusText}`);
 
-    const total = Number(res.headers.get('content-length')) || 0;
+    const total = Number(res.headers.get('content-length')) || await expectedSize(url);
 
     if (!res.body || !total) {
         const buf = await res.arrayBuffer();
