@@ -11,7 +11,7 @@ const FINGER_LABELS = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky'];
 export default function HandReadout({ reading }) {
     if (!reading?.features) return null;
 
-    const { features, nearest, distance, runnerUp, runnerUpDistance } = reading;
+    const { features, gesture, score, shape } = reading;
 
     return (
         <details className="hand-readout">
@@ -33,21 +33,19 @@ export default function HandReadout({ reading }) {
                 <div><dt>Thumb–index gap</dt><dd>{features.thumbIndex.toFixed(2)}</dd></div>
                 <div><dt>Index–middle gap</dt><dd>{features.indexMiddle.toFixed(2)}</dd></div>
                 <div>
-                    <dt>Nearest shape</dt>
-                    <dd>{nearest ?? '—'} <span className="readout-dim">({distance.toFixed(2)})</span></dd>
+                    <dt>Model says</dt>
+                    <dd>{gesture ?? '—'} <span className="readout-dim">({Math.round((score ?? 0) * 100)}%)</span></dd>
                 </div>
                 <div>
-                    <dt>Next nearest</dt>
-                    <dd>
-                        {runnerUp ?? '—'}
-                        {runnerUpDistance != null && <span className="readout-dim"> ({runnerUpDistance.toFixed(2)})</span>}
-                    </dd>
+                    <dt>Used as</dt>
+                    <dd>{shape ?? <span className="readout-dim">not a sign shape</span>}</dd>
                 </div>
             </dl>
 
             <p className="readout-help">
-                0.00 reads as fully curled, 1.00 as straight. Lower distance is a
-                better match; above 0.70 is rejected as unrecognised.
+                Finger bars read 0.00 as fully curled and 1.00 as straight — they
+                are feedback on your hand, not what the classifier uses. The
+                handshape comes from MediaPipe's trained gesture model.
             </p>
         </details>
     );

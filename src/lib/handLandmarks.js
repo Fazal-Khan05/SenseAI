@@ -1,14 +1,19 @@
-import { FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision';
+import { FilesetResolver, GestureRecognizer } from '@mediapipe/tasks-vision';
 import { fetchWithProgress, preloadIntoCache } from './fetchWithProgress';
 
 const WASM_URL = '/mediapipe/wasm/vision_wasm_internal.wasm';
-const MODEL_URL = '/models/hand_landmarker.task';
+const MODEL_URL = '/models/gesture_recognizer.task';
 
 // Rough share of the total bytes, used to blend two downloads into one bar.
 const WASM_SHARE = 0.6;
 
 /**
- * Wraps MediaPipe's pre-trained HandLandmarker.
+ * Wraps MediaPipe's pre-trained GestureRecognizer.
+ *
+ * This model returns hand landmarks AND a trained handshape classification in
+ * one pass. The handshape half replaces hand-written templates whose values
+ * were guessed rather than measured, and which overlapped badly enough that
+ * shapes swapped at random.
  * Assets are served from /public (copied + downloaded by scripts/setup-models.mjs)
  * so detection works offline and does not depend on a CDN at demo time.
  */
@@ -43,11 +48,11 @@ export function loadHandLandmarker(onProgress) {
         // The GPU delegate initialises in about a second; the CPU path takes
         // roughly fifteen. Always try GPU, but fall back rather than fail.
         try {
-            const l = await HandLandmarker.createFromOptions(fileset, OPTIONS('GPU', new Uint8Array(modelBuffer)));
+            const l = await GestureRecognizer.createFromOptions(fileset, OPTIONS('GPU', new Uint8Array(modelBuffer)));
             activeDelegate = 'GPU';
             return l;
         } catch {
-            const l = await HandLandmarker.createFromOptions(fileset, OPTIONS('CPU', new Uint8Array(modelBuffer)));
+            const l = await GestureRecognizer.createFromOptions(fileset, OPTIONS('CPU', new Uint8Array(modelBuffer)));
             activeDelegate = 'CPU';
             return l;
         }

@@ -17,10 +17,14 @@ const WASM_DEST = path.join(root, 'public/mediapipe/wasm');
 // Only the SIMD build is needed; the nosimd fallback doubles the payload.
 const WASM_FILES = ['vision_wasm_internal.js', 'vision_wasm_internal.wasm'];
 
+// The gesture recogniser bundles hand landmark detection AND a trained
+// handshape classifier, so it replaces hand_landmarker.task rather than
+// adding to it. The classifier is what the hand-written shape templates
+// used to do, only trained rather than guessed at.
 const MODELS = [
     {
-        file: 'hand_landmarker.task',
-        url: 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',
+        file: 'gesture_recognizer.task',
+        url: 'https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task',
     },
 ];
 const MODEL_DEST = path.join(root, 'public/models');
@@ -90,7 +94,7 @@ async function fetchCocoSsd() {
 async function writeManifest() {
     const entries = {
         '/mediapipe/wasm/vision_wasm_internal.wasm': path.join(WASM_DEST, 'vision_wasm_internal.js').replace('.js', '.wasm'),
-        '/models/hand_landmarker.task': path.join(MODEL_DEST, 'hand_landmarker.task'),
+        '/models/gesture_recognizer.task': path.join(MODEL_DEST, 'gesture_recognizer.task'),
     };
     const sizes = {};
     for (const [url, file] of Object.entries(entries)) {

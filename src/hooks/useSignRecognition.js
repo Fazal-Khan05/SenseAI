@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { loadHandLandmarker, JOINTS } from '../lib/handLandmarks';
-import { classifyShape } from '../lib/handShapes';
+import { shapeFromGesture } from '../lib/handShapes';
+import { handFeatures } from '../lib/handFeatures';
 import { createMotionTracker } from '../lib/motionTracker';
 import { matchSign } from '../lib/wordSigns';
 
@@ -70,13 +71,13 @@ export function useSignRecognition() {
     }, []);
 
     const onFrame = useCallback((video, ts) => {
-        const landmarker = landmarkerRef.current;
-        if (!landmarker || ts - lastRunRef.current < DETECT_INTERVAL) return;
+        const recognizer = landmarkerRef.current;
+        if (!recognizer || ts - lastRunRef.current < DETECT_INTERVAL) return;
         lastRunRef.current = ts;
 
         let result;
         try {
-            result = landmarker.detectForVideo(video, ts);
+            result = recognizer.recognizeForVideo(video, ts);
         } catch (err) {
             // MediaPipe rejects out-of-order timestamps, which is routine and
             // recoverable. Anything else is logged: discarding errors silently
@@ -103,8 +104,12 @@ export function useSignRecognition() {
         motionRef.current.push(1 - palm.x, palm.y, ts);
 
         const speed = motionRef.current.speed(ts);
-        const reading = classifyShape(hand);
-        const shape = reading?.shape ? reading : null;
+        // Handshape now comes from MediaPipe's trained classifier rather than
+        // hand-written templates. handFeatures is still computed for the
+        // on-screen readout, which is useful feedback for a learner.
+        const gesture = shapeFromGesture(result?.gestures);
+        const reading = { ...gesture, features: handFeatures(hand) };
+        const shape = gesture.shape ? gesture : null;
         const phase = phaseRef.current;
 
         if (shape && shape.confidence >= MIN_CONFIDENCE) strokeShapesRef.current.push(shape.shape);

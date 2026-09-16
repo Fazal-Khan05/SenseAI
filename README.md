@@ -49,10 +49,19 @@ A sign is **handshape + movement**. Shape alone is not enough: THANK-YOU and
 PLEASE are the same flat hand, separated only by how it moves.
 
 ```
-classifyShape()   ->  FLAT | FIST | POINT | VEE | ILY | THUMB_UP | OPEN
-classifySince()   ->  static | linear(up/down/left/right) | circular | oscillate
-matchSign()       ->  gloss, or null
+shapeFromGesture()  ->  FLAT | FIST | POINT | VEE | ILY      (trained model)
+classifySince()     ->  static | linear(…) | circular | oscillate   (rules)
+matchSign()         ->  gloss, or null
 ```
+
+The handshape half comes from **MediaPipe's trained gesture classifier**, not
+hand-written rules. An earlier version scored poses against templates whose
+values were guessed from anatomy rather than measured; two of them overlapped
+below the reject threshold, so shapes swapped at random and signs were
+unreliable across the board. MediaPipe's canned model is trained on exactly
+these handshapes, so the templates are gone.
+
+Movement is still rule-based, and that is the remaining weak half.
 
 **Movement is segmented into strokes, not classified every frame.** Classifying
 continuously does not work: after a sign the hand holds still (which looks like
@@ -90,9 +99,9 @@ register you can see which half is wrong.
 src/
   lib/
     handJoints.js        landmark indices (no MediaPipe import — keeps bundles small)
-    handLandmarks.js     MediaPipe HandLandmarker loader
+    handLandmarks.js     MediaPipe GestureRecognizer (landmarks + trained handshape)
     handFeatures.js      scale/rotation-tolerant pose descriptor + normalisation
-    handShapes.js        handshape classifier (nearest template)
+    handShapes.js        maps MediaPipe's trained gesture labels to handshapes
     motionTracker.js     rolling window -> static / linear / circular / oscillate
     wordSigns.js         shape + motion -> gloss
     signVocabulary.js    single source of truth for glosses
