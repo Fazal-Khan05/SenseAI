@@ -1,0 +1,276 @@
+/* ===== AUTH PAGES ===== */
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+}
+
+.auth-home-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    margin-bottom: 20px;
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+    justify-content: center;
+}
+
+.auth-home-link:hover {
+    color: var(--primary);
+    background: rgba(79, 156, 249, 0.08);
+}
+
+.auth-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.auth-shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+}
+
+.auth-shape-1 {
+    width: 500px;
+    height: 500px;
+    background: rgba(79, 156, 249, 0.12);
+    top: -150px;
+    right: -100px;
+}
+
+.auth-shape-2 {
+    width: 400px;
+    height: 400px;
+    background: rgba(160, 132, 232, 0.1);
+    bottom: -100px;
+    left: -100px;
+}
+
+.auth-shape-3 {
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 107, 129, 0.08);
+    top: 50%;
+    left: 60%;
+}
+
+.auth-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+    padding: 24px;
+}
+
+.auth-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+
+.auth-card {
+    text-align: center;
+}
+
+.auth-card h2 {
+    font-size: var(--fs-2xl);
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.auth-sub {
+    color: var(--text-secondary);
+    font-size: var(--fs-sm);
+    margin-bottom: 32px;
+}
+
+.auth-card form {
+    text-align: left;
+}
+
+.auth-btn {
+    width: 100%;
+    margin-top: 8px;
+}
+
+.auth-footer-text {
+    margin-top: 24px;
+    font-size: var(--fs-sm);
+    color: var(--text-secondary);
+}
+
+.auth-footer-text a {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.auth-footer-text a:hover {
+    text-decoration: underline;
+}
+
+/* ===== Input Toggle (eye icon) ===== */
+.input-toggle {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    padding: 4px;
+    border-radius: 4px;
+    transition: color var(--transition-fast);
+}
+
+.input-toggle:hover {
+    color: var(--primary);
+}
+
+/* ===== Password Strength ===== */
+.password-strength {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    margin-top: -12px;
+}
+
+.strength-bars {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+}
+
+.strength-bar {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    flex: 1;
+    transition: background var(--transition-fast);
+}
+
+.strength-text {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    min-width: 50px;
+    text-align: right;
+}
+
+/* ===== Password Match ===== */
+.match-indicator {
+    position: absolute;
+    right: 44px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.match-indicator.match {
+    color: var(--success);
+}
+
+.match-indicator.no-match {
+    color: var(--error);
+}
+
+/* ===== Auth Options ===== */
+.auth-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--fs-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+}
+
+.forgot-link {
+    font-size: var(--fs-sm);
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+/* ===== OTP ===== */
+.otp-card {
+    max-width: 480px;
+}
+
+.otp-grid {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 32px 0;
+}
+
+.otp-input {
+    width: 54px;
+    height: 60px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    text-align: center;
+    font-size: var(--fs-2xl);
+    font-weight: 700;
+    color: var(--text);
+    background: var(--card);
+    transition: all var(--transition-fast);
+}
+
+.otp-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(79, 156, 249, 0.1);
+}
+
+.otp-input.filled {
+    border-color: var(--primary);
+    background: rgba(79, 156, 249, 0.04);
+}
+
+.resend-btn {
+    margin-top: 16px;
+}
+
+/* ===== OTP Success ===== */
+.otp-success {
+    padding: 40px 0;
+}
+
+.success-icon {
+    color: var(--success);
+    margin-bottom: 20px;
+    animation: successCheck 0.5s ease forwards;
+}
+
+.otp-success h2 {
+    color: var(--success);
+    margin-bottom: 12px;
+}
+
+.otp-success p {
+    color: var(--text-secondary);
+    font-size: var(--fs-sm);
+}
