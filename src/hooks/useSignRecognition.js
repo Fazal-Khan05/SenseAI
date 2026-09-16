@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import * as handLib from '../lib/handLandmarks';
-import { loadHandLandmarker, detectHand, noteError, JOINTS } from '../lib/handLandmarks';
+import { loadHandLandmarker, JOINTS } from '../lib/handLandmarks';
 import { classifyShape } from '../lib/handShapes';
 import { createMotionTracker } from '../lib/motionTracker';
 import { matchSign } from '../lib/wordSigns';
@@ -33,9 +32,6 @@ export function useSignRecognition() {
     const landmarkerRef = useRef(null);
     const motionRef = useRef(createMotionTracker());
     const lastRunRef = useRef(0);
-    // TFJS inference is async, so a frame can arrive mid-detection; without
-    // this guard the queue backs up and the readings arrive out of order.
-    const busyRef = useRef(false);
     const errorsRef = useRef(0);
 
     const phaseRef = useRef('idle');
@@ -68,33 +64,31 @@ export function useSignRecognition() {
         motionRef.current.clear();
     }, []);
 
-    const onFrame = useCallback(async (video, ts) => {
+    const onFrame = useCallback((video, ts) => {
         const landmarker = landmarkerRef.current;
-        if (!landmarker || busyRef.current || ts - lastRunRef.current < DETECT_INTERVAL) return;
+        if (!landmarker || ts - lastRunRef.current < DETECT_INTERVAL) return;
         lastRunRef.current = ts;
-        busyRef.current = true;
 
-        let hand;
+        let result;
         try {
-            hand = await detectHand(landmarker, video);
+            result = landmarker.detectForVideo(video, ts);
         } catch (err) {
-            // Swallowing this silently made a broken detector look exactly
-            // like "no hand in frame", which cost a long debugging detour.
-            noteError(err);
+            // MediaPipe rejects out-of-order timestamps, which is routine and
+            // recoverable. Anything else is logged: discarding errors silently
+            // once made a broken detector look exactly like an empty frame.
             errorsRef.current += 1;
             if (errorsRef.current <= 3) console.error('[sign-detection] inference failed:', err);
-            busyRef.current = false;
-            setLive({ hand: false, shape: null, phase: 'error', progress: 0 });
             return;
         }
-        busyRef.current = false;
+
+        const hand = result?.landmarks?.[0];
 
         if (!hand) {
             phaseRef.current = 'idle';
             strokeShapesRef.current = [];
             holdShapeRef.current = null;
             motionRef.current.clear();
-            setLive({ hand: false, shape: null, phase: 'idle', progress: 0, score: handLib.lastScore });
+            setLive({ hand: false, shape: null, phase: 'idle', progress: 0 });
             return;
         }
 
@@ -166,7 +160,6 @@ export function useSignRecognition() {
             shape: shape?.shape ?? null,
             phase: phaseRef.current,
             progress,
-            score: handLib.lastScore,
         });
     }, [commit]);
 
