@@ -3,6 +3,7 @@ import { Hand, Volume2, Copy, Trash2, Undo2 } from 'lucide-react';
 import DetectionHeader from '../components/DetectionHeader';
 import CameraView from '../components/CameraView';
 import ModelStatus from '../components/ModelStatus';
+import HandReadout from '../components/HandReadout';
 import { useCamera } from '../hooks/useCamera';
 import { useSignRecognition } from '../hooks/useSignRecognition';
 import { useSpeech } from '../hooks/useSpeech';
@@ -105,6 +106,8 @@ export default function SignDetection() {
                                 progress={progress}
                                 slowHint="If this stalls, the browser may be on the slow CPU path."
                             />
+
+                            {isLive && live.hand && <HandReadout reading={live.reading} />}
 
                             <div className="sentence-builder">
                                 <div className="sentence-header">

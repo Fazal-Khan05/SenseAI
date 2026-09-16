@@ -103,7 +103,8 @@ export function useSignRecognition() {
         motionRef.current.push(1 - palm.x, palm.y, ts);
 
         const speed = motionRef.current.speed(ts);
-        const shape = classifyShape(hand);
+        const reading = classifyShape(hand);
+        const shape = reading?.shape ? reading : null;
         const phase = phaseRef.current;
 
         if (shape && shape.confidence >= MIN_CONFIDENCE) strokeShapesRef.current.push(shape.shape);
@@ -166,6 +167,7 @@ export function useSignRecognition() {
             phase: phaseRef.current,
             progress,
             speed,
+            reading,
         });
     }, [commit]);
 

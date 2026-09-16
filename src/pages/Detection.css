@@ -629,3 +629,94 @@
     width: 2px;
     background: var(--accent);
 }
+
+/* ===== HAND READOUT (tuning aid) ===== */
+.hand-readout {
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: var(--card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+}
+
+.hand-readout summary {
+    cursor: pointer;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.hand-readout summary:hover {
+    color: var(--primary);
+}
+
+.readout-fingers {
+    display: grid;
+    gap: 4px;
+    margin-top: 12px;
+}
+
+.readout-finger {
+    display: grid;
+    grid-template-columns: 52px 1fr 36px;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--fs-xs);
+    color: var(--text-secondary);
+}
+
+.readout-track {
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: var(--border);
+    overflow: hidden;
+}
+
+.readout-fill {
+    display: block;
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+    transition: width 80ms linear;
+}
+
+.readout-value {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    color: var(--text-muted);
+}
+
+.readout-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 16px;
+    margin-top: 12px;
+    font-size: var(--fs-xs);
+}
+
+.readout-stats div {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.readout-stats dt {
+    color: var(--text-muted);
+}
+
+.readout-stats dd {
+    font-weight: 600;
+    color: var(--text);
+}
+
+.readout-dim {
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.readout-help {
+    margin-top: 10px;
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    line-height: 1.6;
+}

@@ -27,6 +27,7 @@ export function classifyShape(landmarks) {
     const f = handFeatures(landmarks);
 
     let best = null, bestD = Infinity, runnerUp = Infinity;
+    let runnerUpShape = null;
 
     for (const t of SHAPES) {
         let sum = 0;
@@ -34,15 +35,26 @@ export function classifyShape(landmarks) {
         sum += W_GAP * (f.thumbIndex - t.thumbIndex) ** 2;
         sum += W_GAP * (f.indexMiddle - t.indexMiddle) ** 2;
         const d = Math.sqrt(sum);
-        if (d < bestD) { runnerUp = bestD; bestD = d; best = t; }
-        else if (d < runnerUp) runnerUp = d;
+        if (d < bestD) { runnerUp = bestD; runnerUpShape = best?.shape ?? null; bestD = d; best = t; }
+        else if (d < runnerUp) { runnerUp = d; runnerUpShape = t.shape; }
     }
 
-    if (!best || bestD > REJECT_ABOVE) return null;
+    // `features` and `nearest` are returned even on a reject so the UI can show
+    // what the classifier actually measured. Tuning these templates by
+    // guesswork is what made recognition unreliable in the first place.
+    const detail = {
+        features: f,
+        nearest: best?.shape ?? null,
+        distance: bestD,
+        runnerUp: runnerUpShape,
+        runnerUpDistance: runnerUp === Infinity ? null : runnerUp,
+    };
+
+    if (!best || bestD > REJECT_ABOVE) return { shape: null, confidence: 0, ...detail };
 
     const fit = 1 - bestD / REJECT_ABOVE;
     const margin = runnerUp === Infinity ? 1 : Math.min(1, (runnerUp - bestD) / REJECT_ABOVE);
-    return { shape: best.shape, confidence: 0.6 * fit + 0.4 * margin };
+    return { shape: best.shape, confidence: 0.6 * fit + 0.4 * margin, ...detail };
 }
 
 export const SHAPE_NAMES = SHAPES.map(s => s.shape);
