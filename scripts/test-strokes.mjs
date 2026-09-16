@@ -41,8 +41,10 @@ function run(frames) {
                 let done = false;
                 if (dur >= MIN_STROKE_MS && path >= MIN_STROKE_PATH) {
                     const motion = m.classifySince(strokeStart);
-                    const modal = [...shapes.reduce((a, s) => a.set(s, (a.get(s) ?? 0) + 1), new Map())]
-                        .sort((a, b) => b[1] - a[1])[0]?.[0];
+                    const counts = [...shapes.reduce((a, s) => a.set(s, (a.get(s) ?? 0) + 1), new Map())]
+                        .sort((a, b) => b[1] - a[1]);
+                    // mirror the hook: a flickering shape is not a reading
+                    const modal = counts[0] && counts[0][1] / shapes.length >= 0.6 ? counts[0][0] : undefined;
                     const hit = modal ? matchSign({ shape: modal, confidence: 1 }, motion) : null;
                     if (hit) { out.push(hit.gloss); phase = 'refractory'; stillSince = ts; shapes = []; m.clear(); done = true; }
                 }
@@ -127,6 +129,15 @@ const CASES = [
         name: 'YES (fist nod)',
         frames: [...hold(0.5, 0.5, 'FIST', 12), ...oscY(0.5, 0.5, 0.1, 'FIST', 22), ...hold(0.5, 0.5, 'FIST', 8)],
         expect: ['YES'],
+    },
+    {
+        // Regression: a stroke whose shape flickers must produce nothing
+        // rather than whichever template happened to win by one frame.
+        name: 'Shape flickering through the whole stroke — must emit nothing',
+        frames: [...hold(0.3, 0.4, 'FLAT', 10),
+                 ...move(0.3, 0.4, 0.7, 0.4, 'FLAT', 12).map((f, i) => [f[0], f[1], i % 2 ? 'FIST' : 'FLAT']),
+                 ...hold(0.7, 0.4, 'FLAT', 25).map((f, i) => [f[0], f[1], i % 2 ? 'FIST' : 'FLAT'])],
+        expect: [],
     },
 ];
 

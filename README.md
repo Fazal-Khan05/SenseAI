@@ -37,7 +37,7 @@ acceleration is disabled in the browser — worth checking before a demo.
 |---|---|
 | Object detection | **Real.** COCO-SSD, 80 pre-trained classes, live boxes |
 | Hand tracking | **Real.** MediaPipe HandLandmarker, 21 landmarks |
-| Word signs | **Real.** 11 signs via handshape + motion rules, no training needed |
+| Word signs | **Real.** 8 signs via handshape + motion rules, no training needed |
 | Fingerspelling | **Removed.** Spelling letter-by-letter was too slow to build sentences |
 | Gloss → English | **Real.** Rule-based, 17 passing tests |
 | Speech output | **Real.** Web Speech API |
@@ -66,9 +66,14 @@ Two signs were dropped for being inseparable from ordinary movement:
 `STOP` (flat hand held still) fired on any resting hand, and `GOOD`
 (flat hand upward) is exactly the return stroke of THANK-YOU.
 
-Recognised: `HELLO THANK-YOU PLEASE SORRY YES I-LOVE-YOU ME YOU NO HELP GOODBYE`
+Recognised: `HELLO THANK-YOU PLEASE SORRY YES NO I-LOVE-YOU ME`
 
-These 11 were chosen because they stay separable **without a trained model**.
+These 8 were chosen because they stay separable **without a trained model**.
+The set shrank from fourteen: signs were dropped whenever two of them could
+not be told apart reliably, because an unreliable sign makes its neighbours
+unreliable too. The five remaining handshapes sit at least 1.0 apart in
+feature space against a 0.75 reject cutoff; the earlier FLAT/OPEN pair sat at
+0.52 and swapped at random.
 Real ASL also uses location relative to the body (forehead vs chin vs chest)
 and two-handed forms. Neither is tracked here, so signs that differ only by
 body location are deliberately excluded rather than guessed at.

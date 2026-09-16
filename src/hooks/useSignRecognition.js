@@ -186,10 +186,16 @@ export function useSignRecognition() {
     return { glosses, live, modelState, progress, onFrame, reset, undo, pushGloss, STROKE_START };
 }
 
-/** Most frequent shape across a stroke — steadier than any single frame. */
+/**
+ * Most frequent shape across a stroke — steadier than any single frame.
+ * Returns null unless that shape held a clear majority: a stroke whose shape
+ * flickered between templates is exactly the ambiguous case that produces
+ * confident, wrong signs.
+ */
 function modalShape(shapes) {
     if (!shapes.length) return null;
     const counts = new Map();
     for (const s of shapes) counts.set(s, (counts.get(s) ?? 0) + 1);
-    return [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
+    const [top, count] = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
+    return count / shapes.length >= 0.6 ? top : null;
 }

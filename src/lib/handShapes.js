@@ -6,55 +6,65 @@ import { handFeatures } from './handFeatures';
  * Shape alone cannot identify a word sign — THANK-YOU and PLEASE are both a
  * flat hand, separated only by movement. Shape is one half of the signature;
  * motionTracker.js supplies the other.
+ *
+ * The template set is deliberately small. An earlier version carried seven
+ * shapes, but FLAT and OPEN sat 0.52 apart against a 0.70 reject cutoff, so an
+ * open hand landed on either at random and HELLO/GOODBYE swapped constantly.
+ * Every pair below is now separated by at least one whole finger.
  */
 
-// [thumb, index, middle, ring, pinky] extension, plus tip-gap features
+// [thumb, index, middle, ring, pinky] extension, plus the two tip gaps.
 const SHAPES = [
-    { shape: 'FLAT', ext: [0.6, 1.0, 1.0, 1.0, 1.0], thumbIndex: 0.75, indexMiddle: 0.22 },
-    { shape: 'FIST', ext: [0.3, 0.0, 0.0, 0.0, 0.0], thumbIndex: 0.45, indexMiddle: 0.22 },
-    { shape: 'POINT', ext: [0.3, 1.0, 0.0, 0.0, 0.0], thumbIndex: 0.5, indexMiddle: 0.6 },
-    { shape: 'VEE', ext: [0.2, 1.0, 1.0, 0.0, 0.0], thumbIndex: 0.6, indexMiddle: 0.6 },
-    { shape: 'ILY', ext: [1.0, 1.0, 0.0, 0.0, 1.0], thumbIndex: 0.95, indexMiddle: 0.6 },
-    { shape: 'THUMB_UP', ext: [1.0, 0.0, 0.0, 0.0, 0.0], thumbIndex: 0.7, indexMiddle: 0.22 },
-    { shape: 'OPEN', ext: [1.0, 1.0, 1.0, 1.0, 1.0], thumbIndex: 1.1, indexMiddle: 0.4 },
+    { shape: 'FLAT', ext: [0.5, 1.0, 1.0, 1.0, 1.0], thumbIndex: 0.75, indexMiddle: 0.25 },
+    { shape: 'FIST', ext: [0.2, 0.0, 0.0, 0.0, 0.0], thumbIndex: 0.45, indexMiddle: 0.20 },
+    { shape: 'POINT', ext: [0.2, 1.0, 0.0, 0.0, 0.0], thumbIndex: 0.50, indexMiddle: 0.55 },
+    { shape: 'VEE', ext: [0.2, 1.0, 1.0, 0.0, 0.0], thumbIndex: 0.60, indexMiddle: 0.60 },
+    { shape: 'ILY', ext: [1.0, 1.0, 0.0, 0.0, 1.0], thumbIndex: 0.95, indexMiddle: 0.55 },
 ];
 
-const W_EXT = 1.0;
-const W_GAP = 0.7;
-const REJECT_ABOVE = 0.7;
+// The thumb's landmarks are the noisiest and it is the least reliable
+// discriminator, so it carries less weight than the fingers. The tip gaps are
+// a tie-breaker only: the four finger extensions already separate every shape.
+const W_FINGER = 1.0;
+const W_THUMB = 0.35;
+const W_GAP = 0.15;
+
+const REJECT_ABOVE = 0.75;
+
+// An ambiguous reading is worse than no reading: a wrong sign silently
+// corrupts the sentence. Require the best match to beat the next by a margin.
+const MIN_MARGIN = 0.18;
 
 export function classifyShape(landmarks) {
     const f = handFeatures(landmarks);
 
-    let best = null, bestD = Infinity, runnerUp = Infinity;
-    let runnerUpShape = null;
-
-    for (const t of SHAPES) {
-        let sum = 0;
-        for (let i = 0; i < 5; i++) sum += W_EXT * (f.extension[i] - t.ext[i]) ** 2;
+    const scored = SHAPES.map(t => {
+        let sum = W_THUMB * (f.extension[0] - t.ext[0]) ** 2;
+        for (let i = 1; i < 5; i++) sum += W_FINGER * (f.extension[i] - t.ext[i]) ** 2;
         sum += W_GAP * (f.thumbIndex - t.thumbIndex) ** 2;
         sum += W_GAP * (f.indexMiddle - t.indexMiddle) ** 2;
-        const d = Math.sqrt(sum);
-        if (d < bestD) { runnerUp = bestD; runnerUpShape = best?.shape ?? null; bestD = d; best = t; }
-        else if (d < runnerUp) { runnerUp = d; runnerUpShape = t.shape; }
-    }
+        return { shape: t.shape, distance: Math.sqrt(sum) };
+    }).sort((a, b) => a.distance - b.distance);
 
-    // `features` and `nearest` are returned even on a reject so the UI can show
-    // what the classifier actually measured. Tuning these templates by
-    // guesswork is what made recognition unreliable in the first place.
+    const [best, next] = scored;
+    const margin = next ? next.distance - best.distance : Infinity;
+
+    // Reported even on a reject, so the UI can show what was measured.
     const detail = {
         features: f,
-        nearest: best?.shape ?? null,
-        distance: bestD,
-        runnerUp: runnerUpShape,
-        runnerUpDistance: runnerUp === Infinity ? null : runnerUp,
+        nearest: best.shape,
+        distance: best.distance,
+        runnerUp: next?.shape ?? null,
+        runnerUpDistance: next?.distance ?? null,
     };
 
-    if (!best || bestD > REJECT_ABOVE) return { shape: null, confidence: 0, ...detail };
+    if (best.distance > REJECT_ABOVE || margin < MIN_MARGIN) {
+        return { shape: null, confidence: 0, ...detail };
+    }
 
-    const fit = 1 - bestD / REJECT_ABOVE;
-    const margin = runnerUp === Infinity ? 1 : Math.min(1, (runnerUp - bestD) / REJECT_ABOVE);
-    return { shape: best.shape, confidence: 0.6 * fit + 0.4 * margin, ...detail };
+    const fit = 1 - best.distance / REJECT_ABOVE;
+    const clarity = Math.min(1, margin / REJECT_ABOVE);
+    return { shape: best.shape, confidence: 0.6 * fit + 0.4 * clarity, ...detail };
 }
 
 export const SHAPE_NAMES = SHAPES.map(s => s.shape);

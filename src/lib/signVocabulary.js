@@ -9,7 +9,6 @@ export const VOCABULARY = [
     { gloss: 'HELLO', pos: 'greeting', english: 'hello' },
     { gloss: 'I-LOVE-YOU', pos: 'phrase', english: 'I love you' },
     { gloss: 'STOP', pos: 'phrase', english: 'stop' },
-    { gloss: 'GOODBYE', pos: 'greeting', english: 'goodbye' },
     { gloss: 'THANK-YOU', pos: 'greeting', english: 'thank you' },
     { gloss: 'PLEASE', pos: 'adverb', english: 'please' },
     { gloss: 'SORRY', pos: 'adjective', english: 'sorry' },
