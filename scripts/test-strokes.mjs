@@ -6,7 +6,7 @@ import { matchSign } from '../src/lib/wordSigns.js';
  * hook uses, and asserts on the glosses committed. This is the regression test
  * for the "one sign emits three glosses" bug.
  */
-const STROKE_START = 0.30, STROKE_END = 0.12, STILL_SPEED = 0.10;
+const STROKE_START = 0.15, STROKE_END = 0.10, STILL_SPEED = 0.10;
 const SETTLE_FRAMES = 5, MIN_STROKE_MS = 180, MIN_STROKE_PATH = 0.10;
 const HOLD_MS = 700, REARM_MS = 400, DT = 40;
 
@@ -52,6 +52,19 @@ function run(frames) {
         ts += DT;
     }
     return out;
+}
+
+/** Peak speed (frame-widths/sec) of a synthetic path, at DT per sample. */
+function peakSpeed(frames) {
+    let peak = 0;
+    for (let i = 4; i < frames.length; i++) {
+        let path = 0;
+        for (let j = i - 3; j <= i; j++) {
+            path += Math.hypot(frames[j][0] - frames[j-1][0], frames[j][1] - frames[j-1][1]);
+        }
+        peak = Math.max(peak, path / (4 * DT / 1000));
+    }
+    return peak;
 }
 
 const hold = (x, y, shape, n) => Array.from({ length: n }, () => [x, y, shape]);
@@ -104,6 +117,13 @@ const CASES = [
         expect: [],
     },
     {
+        // Regression: thresholds were tuned against paths ~3x faster than real
+        // signing, so an unhurried sweep never started a stroke at all.
+        name: 'HELLO signed slowly (~1.6s sweep)',
+        frames: [...hold(0.36, 0.4, 'FLAT', 10), ...move(0.36, 0.4, 0.64, 0.4, 'FLAT', 40), ...hold(0.64, 0.4, 'FLAT', 25)],
+        expect: ['HELLO'],
+    },
+    {
         name: 'YES (fist nod)',
         frames: [...hold(0.5, 0.5, 'FIST', 12), ...oscY(0.5, 0.5, 0.1, 'FIST', 22), ...hold(0.5, 0.5, 'FIST', 8)],
         expect: ['YES'],
@@ -115,7 +135,8 @@ for (const c of CASES) {
     const got = run(c.frames);
     const ok = JSON.stringify(got) === JSON.stringify(c.expect);
     ok ? pass++ : fail++;
-    console.log(`${ok ? 'ok  ' : 'FAIL'}  ${c.name}`);
+    const sp = peakSpeed(c.frames).toFixed(2);
+    console.log(`${ok ? 'ok  ' : 'FAIL'}  ${c.name.padEnd(52)} peak ${sp}/s`);
     if (!ok) console.log(`        got ${JSON.stringify(got)}  expected ${JSON.stringify(c.expect)}`);
 }
 console.log(`\n${pass} passed, ${fail} failed`);

@@ -27,7 +27,7 @@ export default function SignDetection() {
     const [speechOn, setSpeechOn] = useState(false);
     const [copied, setCopied] = useState(false);
 
-    const { glosses, live, modelState, progress, onFrame, reset, undo, pushGloss } = useSignRecognition();
+    const { glosses, live, modelState, progress, onFrame, reset, undo, pushGloss, STROKE_START } = useSignRecognition();
     const { videoRef, status, error, start, stop, isLive } = useCamera(onFrame);
 
     const sentence = useMemo(() => glossToSentence(glosses), [glosses]);
@@ -76,6 +76,17 @@ export default function SignDetection() {
                                             <span className="live-tag">{live.shape ?? 'unknown shape'}</span>
                                             <span className={`live-tag subtle phase-${live.phase}`}>
                                                 {PHASE_LABEL[live.phase]}
+                                            </span>
+
+                                            {/* How fast your hand is moving against the speed a
+                                                sign needs. Without this, "nothing happens" gives
+                                                you no way to tell you are moving too slowly. */}
+                                            <span className="motion-meter" title="Move faster than the marker to start a sign">
+                                                <span
+                                                    className={`motion-fill ${live.speed >= STROKE_START ? 'over' : ''}`}
+                                                    style={{ width: `${Math.min(100, (live.speed / (STROKE_START * 2)) * 100)}%` }}
+                                                />
+                                                <span className="motion-threshold" style={{ left: '50%' }} />
                                             </span>
                                             {live.progress > 0 && (
                                                 <div className="confidence-bar live-bar">

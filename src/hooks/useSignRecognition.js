@@ -7,8 +7,13 @@ import { matchSign } from '../lib/wordSigns';
 const DETECT_INTERVAL = 40;     // ~25fps
 
 // Speeds are normalised frame-widths per second.
-const STROKE_START = 0.30;      // hand accelerating = a sign is starting
-const STROKE_END = 0.12;        // hand settling = the sign is finishing
+// Frame-widths per second. These were originally set against synthetic test
+// paths that moved ~3x faster than real signing, so a deliberate sign never
+// crossed the start threshold and the recogniser sat in 'idle' forever.
+// Landmark jitter on a still hand measures well under 0.05, so 0.15 clears
+// noise while staying reachable at a natural signing pace.
+const STROKE_START = 0.15;      // hand accelerating = a sign is starting
+const STROKE_END = 0.10;        // hand settling = the sign is finishing
 const STILL_SPEED = 0.10;
 
 const SETTLE_FRAMES = 5;        // frames below STROKE_END that close a stroke
@@ -88,7 +93,7 @@ export function useSignRecognition() {
             strokeShapesRef.current = [];
             holdShapeRef.current = null;
             motionRef.current.clear();
-            setLive({ hand: false, shape: null, phase: 'idle', progress: 0 });
+            setLive({ hand: false, shape: null, phase: 'idle', progress: 0, speed: 0 });
             return;
         }
 
@@ -160,6 +165,7 @@ export function useSignRecognition() {
             shape: shape?.shape ?? null,
             phase: phaseRef.current,
             progress,
+            speed,
         });
     }, [commit]);
 
@@ -175,7 +181,7 @@ export function useSignRecognition() {
     const undo = useCallback(() => setGlosses(g => g.slice(0, -1)), []);
     const pushGloss = useCallback((gloss) => setGlosses(g => [...g, gloss]), []);
 
-    return { glosses, live, modelState, progress, onFrame, reset, undo, pushGloss };
+    return { glosses, live, modelState, progress, onFrame, reset, undo, pushGloss, STROKE_START };
 }
 
 /** Most frequent shape across a stroke — steadier than any single frame. */
