@@ -22,13 +22,13 @@
  */
 export const SIGN_TEMPLATES = [
     // Flat hand — separated entirely by movement.
-    { gloss: 'HELLO', shape: 'FLAT', motion: 'linear', direction: 'right', hint: 'Flat hand, sweep sideways' },
-    { gloss: 'HELLO', shape: 'FLAT', motion: 'linear', direction: 'left', hint: 'Flat hand, sweep sideways' },
+    { gloss: 'HELLO', shape: 'FLAT', motion: 'linear', direction: 'right', hint: 'Flat hand, sweep sideways in one direction' },
+    { gloss: 'HELLO', shape: 'FLAT', motion: 'linear', direction: 'left', hint: 'Flat hand, sweep sideways in one direction' },
     { gloss: 'THANK-YOU', shape: 'FLAT', motion: 'linear', direction: 'down', hint: 'Flat hand at chin, move straight down' },
-    { gloss: 'PLEASE', shape: 'FLAT', motion: 'circular', direction: null, hint: 'Flat hand, circle on your chest' },
+    { gloss: 'PLEASE', shape: 'FLAT', motion: 'circular', direction: null, hint: 'Flat hand, a full circle on your chest (complete the loop)' },
 
     // Fist — circling versus nodding.
-    { gloss: 'SORRY', shape: 'FIST', motion: 'circular', direction: null, hint: 'Fist, circle on your chest' },
+    { gloss: 'SORRY', shape: 'FIST', motion: 'circular', direction: null, hint: 'Fist, a full circle on your chest (complete the loop)' },
     { gloss: 'YES', shape: 'FIST', motion: 'oscillate', direction: 'vertical', hint: 'Fist, nod it up and down' },
 
     // Distinct shapes, held still or waved.

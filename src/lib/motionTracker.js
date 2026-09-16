@@ -20,7 +20,14 @@ const SPEED_WINDOW_MS = 160;
 
 const STATIC_PATH = 0.08;
 const LINEAR_RATIO = 0.62;
-const MIN_WINDING = 3.2;
+
+// A circular sign (PLEASE, SORRY) is a full loop that comes back to where it
+// started. The old threshold accepted 3.2 rad - barely half a turn - so any
+// curved sweep read as circular and HELLO came out as PLEASE. A real circle
+// measures ~5.7 rad per revolution and ends near its origin; an arcing sweep
+// accumulates under 2.5 rad and ends far away.
+const MIN_WINDING = 5.0;
+const MAX_CIRCULAR_DISPLACEMENT = 0.35;
 
 export function createMotionTracker() {
     let trail = [];
@@ -60,7 +67,7 @@ export function createMotionTracker() {
             if (ax || ay || bx || by) winding += Math.atan2(cross, dot);
         }
 
-        if (Math.abs(winding) >= MIN_WINDING) {
+        if (Math.abs(winding) >= MIN_WINDING && displacement / path <= MAX_CIRCULAR_DISPLACEMENT) {
             return { type: 'circular', direction: null, magnitude: path };
         }
 
