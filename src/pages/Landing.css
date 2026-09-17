@@ -89,45 +89,10 @@
     margin-bottom: 48px;
 }
 
-.hero-stats {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    padding: 20px 28px;
-    background: var(--card);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--border);
-    display: inline-flex;
-}
 
-.hero-stat {
-    display: flex;
-    flex-direction: column;
-}
 
-.stat-number {
-    font-size: var(--fs-xl);
-    font-weight: 800;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
 
-.stat-label {
-    font-size: var(--fs-xs);
-    color: var(--text-muted);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
 
-.stat-divider {
-    width: 1px;
-    height: 32px;
-    background: var(--border);
-}
 
 /* ===== HERO ILLUSTRATION ===== */
 .hero-visual {
@@ -486,10 +451,6 @@
         justify-content: center;
     }
 
-    .hero-stats {
-        display: inline-flex;
-        justify-content: center;
-    }
 
     .hero-visual {
         display: none;
@@ -533,4 +494,103 @@
 .btn-on-gradient:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
+}
+
+/* ===== HERO FACTS =====
+   Replaces the old big-number stat row. Checkable statements, not metrics. */
+.hero-facts {
+    display: grid;
+    gap: 10px;
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border-subtle);
+    max-width: 46ch;
+}
+
+.hero-facts li {
+    position: relative;
+    padding-left: 26px;
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.hero-facts li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 12px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--gradient-primary);
+}
+
+/* ===== HERO PROOF CARDS =====
+   The product's real output: gloss in, English out. */
+.hero-card-float .hero-gloss {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.hero-card-float .hero-arrow {
+    color: var(--text-muted);
+    font-size: var(--fs-xs);
+    line-height: 1;
+}
+
+.hero-card-float strong {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* ===== SIGN INVENTORY =====
+   States the eight-sign limit plainly. Not headlined, not hidden. */
+.sign-inventory {
+    max-width: 62ch;
+    margin: 48px auto 0;
+    padding: 28px 32px;
+    background: var(--card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.sign-inventory h3 {
+    font-size: var(--fs-base);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+}
+
+.sign-inventory-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.sign-inventory-list li {
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
+    background: var(--primary-ghost);
+    color: var(--primary);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.sign-inventory p {
+    font-size: var(--fs-sm);
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .sign-inventory {
+        padding: 24px;
+    }
 }

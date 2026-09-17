@@ -16,11 +16,12 @@
   --card: #FFFFFF;
   --text: #2D2D2D;
   --text-secondary: #6B7280;
-  --text-muted: #9CA3AF;
+  --text-muted: #6E7685;
   --border: #E5E7EB;
   --success: #10B981;
   --error: #EF4444;
   --warning: #F59E0B;
+  --warning-text: #96590A;
 
   /* Surfaces & borders (theme-aware — never hardcode these values) */
   --border-subtle: rgba(229, 231, 235, 0.5);
@@ -37,6 +38,9 @@
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, #4F9CF9, #A084E8);
   --gradient-accent: linear-gradient(135deg, #FF6B81, #A084E8);
+  /* Same gradient language, deep enough for small white text to pass 4.5:1.
+     For badges and chips, not for actions. */
+  --gradient-primary-deep: linear-gradient(135deg, #2F6BB8, #6B4FC0);
   --gradient-hero: linear-gradient(135deg, #4F9CF9 0%, #A084E8 50%, #FF6B81 100%);
   --gradient-card: linear-gradient(135deg, rgba(79, 156, 249, 0.05), rgba(160, 132, 232, 0.05));
 
@@ -104,6 +108,7 @@
   --surface-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
   --input-bg: #181B25;
   --primary-ghost: rgba(79, 156, 249, 0.12);
+  --warning-text: #FBBF5A;
   --surface-footer: #0A0C12;
 }
 
@@ -676,6 +681,59 @@ img {
     --fs-4xl: 1.5rem;
   }
 }
+/* ============================================
+   BROWSER SURFACES
+   The parts we didn't draw still carry the design: selection, caret,
+   scrollbars and numerals all ship with defaults belonging to no system.
+   ============================================ */
+
+::selection {
+  background: rgba(79, 156, 249, 0.22);
+  color: var(--text);
+}
+
+html {
+  caret-color: var(--primary);
+  scrollbar-color: var(--border) transparent;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border: 3px solid transparent;
+  border-radius: var(--radius-full);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+  background-clip: content-box;
+}
+
+/* Measured values must not jitter as digits change. */
+.confidence-value,
+.coverage-count,
+.model-elapsed,
+.readout-value,
+.detection-index,
+.stat-value {
+  font-variant-numeric: tabular-nums;
+}
+
+a {
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: from-font;
+}
+
 /* ============================================
    ACCESSIBILITY
    ============================================ */

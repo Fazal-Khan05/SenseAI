@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-17T00:00:00Z",
+  "title": "Design System: Sense AI",
+  "extensions": {
+    "colorMeta": {
+      "clarity-blue": {
+        "role": "primary",
+        "displayName": "Clarity Blue",
+        "canonical": "#4F9CF9",
+        "tonalRamp": ["#0B2545", "#123A6B", "#1B5394", "#2A6FBF", "#3A7FD5", "#4F9CF9", "#7BB8FB", "#C7DEFD"]
+      },
+      "focus-violet": {
+        "role": "secondary",
+        "displayName": "Focus Violet",
+        "canonical": "#A084E8",
+        "tonalRamp": ["#1F1436", "#33215A", "#4A317F", "#6544A8", "#8265C9", "#A084E8", "#BFA8F0", "#E3D8F9"]
+      },
+      "attention-coral": {
+        "role": "tertiary",
+        "displayName": "Attention Coral",
+        "canonical": "#FF6B81",
+        "tonalRamp": ["#3D0C16", "#631421", "#8C1D2E", "#B82A3E", "#DE4459", "#FF6B81", "#FF8FA0", "#FFD1D9"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#2D2D2D",
+        "tonalRamp": ["#0F0F0F", "#1C1C1C", "#2D2D2D", "#4A4A4A", "#6B7280", "#9CA3AF", "#E5E7EB", "#F9FAFC"]
+      },
+      "page": {
+        "role": "neutral",
+        "displayName": "Page",
+        "canonical": "#F9FAFC",
+        "tonalRamp": ["#0F1117", "#181B25", "#1E2130", "#2D3040", "#6B7080", "#A0A4B0", "#F1F3F8", "#F9FAFC"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headline. One per page, never repeated below the fold." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles and page-level headings." },
+      "title": { "displayName": "Title", "purpose": "Card and panel headings." },
+      "body": { "displayName": "Body", "purpose": "All running copy; subtitles run 1.125rem/1.7 at a 600px measure." },
+      "label": { "displayName": "Label", "purpose": "Shape tags, metadata, measured values, chips. Never sentence-length." }
+    },
+    "shadows": [
+      { "name": "ambient-subtle", "value": "0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)", "purpose": "Small surfaces: sentence panels, inline containers." },
+      { "name": "ambient-standard", "value": "0 4px 12px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04)", "purpose": "Default for cards and the camera frame." },
+      { "name": "ambient-raised", "value": "0 10px 30px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04)", "purpose": "Glass panels, and cards under the cursor." },
+      { "name": "ambient-deep", "value": "0 20px 50px rgba(0,0,0,0.1)", "purpose": "Reserved for full-attention surfaces." },
+      { "name": "signal-glow", "value": "0 4px 14px rgba(79,156,249,0.3)", "purpose": "Coloured shadow beneath primary actions; the only shadow carrying hue." },
+      { "name": "accent-glow", "value": "0 4px 14px rgba(255,107,129,0.3)", "purpose": "The coral equivalent, for the object-detection primary action." }
+    ],
+    "motion": [
+      { "name": "fast", "value": "150ms ease", "purpose": "Colour and border changes on hover; input focus." },
+      { "name": "base", "value": "250ms ease", "purpose": "Default for buttons, cards, and overlay fades." },
+      { "name": "slow", "value": "400ms ease", "purpose": "Large surface transitions." },
+      { "name": "measure", "value": "width 500ms ease", "purpose": "Confidence and progress fills; the value should be felt filling, not snap." },
+      { "name": "meter", "value": "width 80ms linear", "purpose": "Live motion meter, which must track the hand without lag." }
+    ],
+    "breakpoints": [
+      { "name": "detection-stack", "value": "968px" },
+      { "name": "mobile", "value": "768px" },
+      { "name": "small", "value": "480px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The system's own voice. Primary action on any surface.",
+      "html": "<button class=\"ds-btn-primary\">Start Camera</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 28px; border: none; border-radius: 9999px; background: linear-gradient(135deg, #4F9CF9, #A084E8); color: #fff; font-family: Inter, -apple-system, sans-serif; font-size: 1rem; font-weight: 600; box-shadow: 0 4px 14px rgba(79,156,249,0.3); cursor: pointer; transition: all 250ms ease; } .ds-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(79,156,249,0.4); } .ds-btn-primary:active { transform: translateY(0); } .ds-btn-primary:focus-visible { outline: 2px solid #4F9CF9; outline-offset: 2px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "The secondary action beside a primary. Inverts to a solid fill on hover.",
+      "html": "<button class=\"ds-btn-outline\">Try Object Detection</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border: 2px solid #4F9CF9; border-radius: 9999px; background: transparent; color: #4F9CF9; font-family: Inter, -apple-system, sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 250ms ease; } .ds-btn-outline:hover { background: #4F9CF9; color: #fff; transform: translateY(-2px); box-shadow: 0 4px 14px rgba(79,156,249,0.3); } .ds-btn-outline:focus-visible { outline: 2px solid #4F9CF9; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Navigation and toolbar actions. Text-only until hovered.",
+      "html": "<button class=\"ds-btn-ghost\">Clear</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: none; border-radius: 9999px; background: transparent; color: #6B7280; font-family: Inter, -apple-system, sans-serif; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 150ms ease; } .ds-btn-ghost:hover { color: #4F9CF9; background: rgba(79,156,249,0.08); } .ds-btn-ghost:disabled { opacity: 0.5; cursor: not-allowed; } .ds-btn-ghost:focus-visible { outline: 2px solid #4F9CF9; outline-offset: 2px; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "The default raised surface. Ambient shadow does the separating; the border is a faint hairline.",
+      "html": "<div class=\"ds-card\"><h3>Sign Language Detection</h3><p>Detect and translate hand gestures into text using your camera.</p></div>",
+      "css": ".ds-card { background: #fff; border: 1px solid rgba(229,231,235,0.5); border-radius: 16px; padding: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04); font-family: Inter, -apple-system, sans-serif; transition: all 250ms ease; } .ds-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04); transform: translateY(-4px); } .ds-card h3 { margin: 0 0 12px; font-size: 1.25rem; font-weight: 700; color: #2D2D2D; } .ds-card p { margin: 0; font-size: 1rem; line-height: 1.6; color: #6B7280; }"
+    },
+    {
+      "name": "Glass Panel",
+      "kind": "card",
+      "refersTo": "card-glass",
+      "description": "Auth screens and panels floating over decorative background shapes.",
+      "html": "<div class=\"ds-card-glass\"><h3>Welcome Back</h3><p>Sign in to continue to your dashboard</p></div>",
+      "css": ".ds-card-glass { background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04); font-family: Inter, -apple-system, sans-serif; } .ds-card-glass h3 { margin: 0 0 8px; font-size: 1.25rem; font-weight: 700; color: #2D2D2D; } .ds-card-glass p { margin: 0; color: #6B7280; font-size: 1rem; }"
+    },
+    {
+      "name": "Floating-Label Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "The label rides from centre to the top edge on focus or fill, interrupting the border it crosses.",
+      "html": "<div class=\"ds-field\"><input id=\"ds-email\" class=\"ds-input\" type=\"email\" placeholder=\" \" /><label class=\"ds-label\" for=\"ds-email\">Email Address</label></div>",
+      "css": ".ds-field { position: relative; font-family: Inter, -apple-system, sans-serif; } .ds-input { width: 100%; padding: 16px 18px; border: 2px solid #E5E7EB; border-radius: 12px; font-size: 1rem; background: #fff; color: #2D2D2D; transition: all 150ms ease; } .ds-input:focus { outline: none; border-color: #4F9CF9; box-shadow: 0 0 0 4px rgba(79,156,249,0.1); } .ds-label { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #9CA3AF; font-size: 1rem; pointer-events: none; background: #fff; padding: 0 4px; transition: all 150ms ease; } .ds-input:focus ~ .ds-label, .ds-input:not(:placeholder-shown) ~ .ds-label { top: -1px; font-size: 0.75rem; color: #4F9CF9; font-weight: 500; }"
+    },
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Pill ghost link. Active route carries aria-current.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link ds-nav-link--active\" href=\"#\" aria-current=\"page\">Dashboard</a><a class=\"ds-nav-link\" href=\"#\">Contact</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 8px; font-family: Inter, -apple-system, sans-serif; } .ds-nav-link { padding: 8px 16px; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; color: #6B7280; text-decoration: none; transition: all 150ms ease; } .ds-nav-link:hover { color: #4F9CF9; background: rgba(79,156,249,0.08); } .ds-nav-link--active { color: #4F9CF9; } .ds-nav-link:focus-visible { outline: 2px solid #4F9CF9; outline-offset: 2px; }"
+    },
+    {
+      "name": "Confidence Bar",
+      "kind": "custom",
+      "refersTo": "confidence-bar",
+      "description": "Signature element. Every measurement the product reports uses this one shape: detection confidence, download progress, hold progress.",
+      "html": "<div class=\"ds-confidence\"><span class=\"ds-confidence-label\">Hello</span><span class=\"ds-confidence-track\"><span class=\"ds-confidence-fill\" style=\"width:86%\"></span></span><span class=\"ds-confidence-value\">86%</span></div>",
+      "css": ".ds-confidence { display: flex; align-items: center; gap: 10px; font-family: Inter, -apple-system, sans-serif; } .ds-confidence-label { font-size: 0.875rem; font-weight: 600; color: #2D2D2D; } .ds-confidence-track { flex: 1; height: 6px; min-width: 80px; border-radius: 9999px; background: #E5E7EB; overflow: hidden; } .ds-confidence-fill { display: block; height: 100%; border-radius: 9999px; background: linear-gradient(135deg, #4F9CF9, #A084E8); transition: width 500ms ease; } .ds-confidence-value { font-size: 0.75rem; font-variant-numeric: tabular-nums; color: #9CA3AF; }"
+    },
+    {
+      "name": "Live Readout Tag",
+      "kind": "chip",
+      "refersTo": "live-tag",
+      "description": "Signature element. Shows what the classifier currently measures, so a learner sees why a sign did not register.",
+      "html": "<span class=\"ds-tag\">FLAT</span><span class=\"ds-tag ds-tag--subtle\">ready — make a sign</span>",
+      "css": ".ds-tag { display: inline-block; padding: 3px 8px; margin-right: 6px; border-radius: 9999px; background: rgba(79,156,249,0.08); color: #4F9CF9; font-family: Inter, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; white-space: nowrap; } .ds-tag--subtle { background: #F1F3F8; color: #9CA3AF; }"
+    },
+    {
+      "name": "Toggle Switch",
+      "kind": "custom",
+      "refersTo": "toggle",
+      "description": "Used for speech output. A real button with role=switch, not a styled div.",
+      "html": "<button class=\"ds-toggle ds-toggle--on\" role=\"switch\" aria-checked=\"true\" aria-label=\"Read the sentence aloud\"></button>",
+      "css": ".ds-toggle { width: 48px; height: 26px; border: none; border-radius: 13px; background: #E5E7EB; position: relative; cursor: pointer; transition: background 150ms ease; } .ds-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: transform 150ms ease; } .ds-toggle--on { background: #4F9CF9; } .ds-toggle--on::after { transform: translateX(22px); } .ds-toggle:focus-visible { outline: 2px solid #4F9CF9; outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Patient Tutor",
+    "overview": "Sense AI watches a learner practise American Sign Language and tells them what it saw. That job sets the entire visual temperature: the interface is a practice partner, never an examiner. A sign that does not register is the most common event in the product, so every surface is built so that outcome reads as try again rather than you failed.\n\nThe palette is soft and cool — a blue-to-violet gradient does the signalling work, with a single warm coral reserved for genuine attention. Surfaces are light, generously padded and gently rounded; nothing is sharp enough to read as a warning. Depth comes from soft ambient shadow rather than hard edges, so panels feel like stacked paper on a bright desk. Type is a single family, Inter, working across a wide weight range.\n\nFour confirmed anti-references: clinical medical software, consumer AI hype, generic dashboard templates, and childish learning apps.",
+    "keyCharacteristics": [
+      "Cool blue-violet gradient as the signal; one warm coral held in reserve",
+      "Fully rounded (pill) actions and 16px surfaces — nothing sharp",
+      "Soft ambient shadow for depth; no hard borders carrying structure",
+      "One typeface, wide weight range, tight display tracking",
+      "Light and dark are equal citizens, driven entirely by tokens",
+      "The interface explains what it measured rather than only what it concluded"
+    ],
+    "rules": [
+      { "name": "The Warm-Once Rule", "body": "Coral is the only warm hue in the system, and no screen carries more than one coral element. If a second thing needs emphasis, it takes Clarity Blue.", "section": "colors" },
+      { "name": "The Theme-Token Rule", "body": "Every surface, border and shadow reads from a theme-aware token. Hardcoding a literal colour is how dark mode breaks: the value cannot follow the theme, so it needs a hand-written patch, and the next component needs another one. There are zero such patches and there must stay zero.", "section": "colors" },
+      { "name": "The No-Alarm Rule", "body": "Error red is reserved for form validation and load failures. Detection never uses it: an unrecognised sign is an ordinary outcome of practice, not an error.", "section": "colors" },
+      { "name": "The One Family Rule", "body": "Inter does every job. A second typeface is not a missing feature — hierarchy is weight and size.", "section": "typography" },
+      { "name": "The Tight-Display Rule", "body": "Negative tracking (-1px) applies only at display size. Applied to body text it reads as cramped rather than confident.", "section": "typography" },
+      { "name": "The Generous-Padding Rule", "body": "Interior padding never drops below 20px on a surface that holds text. Tight padding is what makes an interface feel like an admin panel.", "section": "layout" },
+      { "name": "The Softer-In-Dark Rule", "body": "Dark mode does not reuse light-mode shadows. Every step deepens because a shadow tuned for a white ground disappears on a dark one.", "section": "elevation" },
+      { "name": "The No-Sharp-Corners Rule", "body": "Nothing in this interface has a square corner. A right angle reads as a warning or a system dialog, and neither belongs in a practice tool.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do read every colour, surface, border and shadow from a theme token. The system has zero [data-theme=\"dark\"] component patches; keep it that way.",
+      "Do use the primary gradient for primary actions and every measurement fill. Flat blue is for strokes and text, not for filled actions.",
+      "Do keep actions fully rounded (9999px) and surfaces at 16px.",
+      "Do express depth with ambient shadow and let borders stay faint hairlines.",
+      "Do give text-bearing surfaces at least 20px of interior padding.",
+      "Do show what was measured, not only what was concluded — confidence, phase, and live readings are features, not debug output.",
+      "Do keep a visible focus indicator on every interactive element; the base reset removes outlines, so :focus-visible restores them deliberately.",
+      "Do honour prefers-reduced-motion: animations collapse to near-zero and no content is left stranded at opacity: 0."
+    ],
+    "donts": [
+      "Don't hardcode a literal colour, surface or border value in a component.",
+      "Don't introduce a second typeface. Hierarchy is weight and size.",
+      "Don't use a square corner anywhere.",
+      "Don't put more than one coral element on a screen, or use coral for anything that is not genuine attention.",
+      "Don't colour detection failure red. An unrecognised sign is a normal outcome of practice.",
+      "Don't apply display tracking (-1px) below display size.",
+      "Don't reuse light-mode shadow values in dark mode.",
+      "Don't state a metric the code cannot substantiate — accuracy, latency, vocabulary size or user counts. Every number on screen must trace to a real measurement."
+    ]
+  }
+}

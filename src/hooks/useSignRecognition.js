@@ -24,6 +24,10 @@ const HOLD_MS = 700;            // stillness needed to commit a static sign
 const REARM_MS = 400;           // stillness needed before another sign can fire
 const MIN_CONFIDENCE = 0.4;
 
+// A recognisable shape held this long without any sign completing counts as an
+// attempt: the learner is trying something and it is not landing.
+const ATTEMPT_MS = 3500;
+
 /**
  * Camera frames -> word glosses.
  *
@@ -34,7 +38,7 @@ const MIN_CONFIDENCE = 0.4;
  *
  * States: idle -> stroke -> (commit) -> refractory -> idle
  */
-export function useSignRecognition() {
+export function useSignRecognition({ onCommit, onAttempt } = {}) {
     const landmarkerRef = useRef(null);
     const motionRef = useRef(createMotionTracker());
     const lastRunRef = useRef(0);
@@ -48,10 +52,19 @@ export function useSignRecognition() {
     const holdShapeRef = useRef(null);
     const holdSinceRef = useRef(0);
 
+    const shapeHeldSinceRef = useRef(0);
+    const heldShapeRef = useRef(null);
+    const attemptFiredRef = useRef(false);
+    const commitCbRef = useRef(onCommit);
+    const attemptCbRef = useRef(onAttempt);
+
     const [modelState, setModelState] = useState('loading');
     const [progress, setProgress] = useState(0);
     const [glosses, setGlosses] = useState([]);
     const [live, setLive] = useState({ hand: false, shape: null, phase: 'idle', progress: 0 });
+
+    useEffect(() => { commitCbRef.current = onCommit; }, [onCommit]);
+    useEffect(() => { attemptCbRef.current = onAttempt; }, [onAttempt]);
 
     useEffect(() => {
         let cancelled = false;
@@ -63,6 +76,11 @@ export function useSignRecognition() {
 
     const commit = useCallback((gloss, ts) => {
         setGlosses(g => [...g, gloss]);
+        commitCbRef.current?.(gloss);
+        // A completed sign ends any struggle in progress.
+        shapeHeldSinceRef.current = 0;
+        heldShapeRef.current = null;
+        attemptFiredRef.current = false;
         phaseRef.current = 'refractory';
         stillSinceRef.current = ts;
         holdShapeRef.current = null;
@@ -111,6 +129,20 @@ export function useSignRecognition() {
         const reading = { ...gesture, features: handFeatures(hand) };
         const shape = gesture.shape ? gesture : null;
         const phase = phaseRef.current;
+
+        // Track how long one recognisable shape has been held. If it never
+        // turns into a sign, credit an attempt so the UI can coach it.
+        const heldShape = shape?.shape ?? null;
+        if (heldShape && heldShape === heldShapeRef.current) {
+            if (!attemptFiredRef.current && ts - shapeHeldSinceRef.current >= ATTEMPT_MS) {
+                attemptFiredRef.current = true;
+                attemptCbRef.current?.(heldShape);
+            }
+        } else {
+            heldShapeRef.current = heldShape;
+            shapeHeldSinceRef.current = ts;
+            attemptFiredRef.current = false;
+        }
 
         if (shape && shape.confidence >= MIN_CONFIDENCE) strokeShapesRef.current.push(shape.shape);
         if (strokeShapesRef.current.length > 60) strokeShapesRef.current.shift();

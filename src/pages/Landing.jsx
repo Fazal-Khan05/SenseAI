@@ -1,4 +1,5 @@
 import Navbar from '../components/Navbar';
+import { SIGN_GLOSSES } from '../lib/wordSigns';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
 import {
@@ -40,35 +41,26 @@ export default function Landing() {
                                 <ScanSearch size={20} /> Try Object Detection
                             </Link>
                         </div>
-                        <div className="hero-stats">
-                            <div className="hero-stat">
-                                <span className="stat-number">99%</span>
-                                <span className="stat-label">Accuracy</span>
-                            </div>
-                            <div className="stat-divider"></div>
-                            <div className="hero-stat">
-                                <span className="stat-number">&lt;50ms</span>
-                                <span className="stat-label">Latency</span>
-                            </div>
-                            <div className="stat-divider"></div>
-                            <div className="hero-stat">
-                                <span className="stat-number">100+</span>
-                                <span className="stat-label">Signs</span>
-                            </div>
-                        </div>
+                        <ul className="hero-facts">
+                            <li>Runs entirely in your browser — video never leaves your device</li>
+                            <li>Recognises {SIGN_GLOSSES.length} signs and builds them into English sentences</li>
+                            <li>No sign-up needed to try it</li>
+                        </ul>
                     </div>
 
                     <div className="hero-visual animate-slide-right">
                         <div className="hero-illustration">
+                            {/* The product's actual output, not invented metrics:
+                                ASL gloss on top, the English it produces below. */}
                             <div className="hero-card-float hero-card-1 animate-float">
-                                <Hand size={24} className="card-icon" />
-                                <span>Sign Detected: <strong>Hello</strong></span>
-                                <span className="confidence">98.5%</span>
+                                <span className="hero-gloss">ME SORRY</span>
+                                <span className="hero-arrow" aria-hidden="true">↓</span>
+                                <strong>“I am sorry.”</strong>
                             </div>
                             <div className="hero-card-float hero-card-2 animate-float" style={{ animationDelay: '0.5s' }}>
-                                <ScanSearch size={24} className="card-icon" />
-                                <span>Object: <strong>Laptop</strong></span>
-                                <span className="confidence">97.2%</span>
+                                <span className="hero-gloss">I-LOVE-YOU</span>
+                                <span className="hero-arrow" aria-hidden="true">↓</span>
+                                <strong>“I love you.”</strong>
                             </div>
                             <div className="hero-orb hero-orb-1"></div>
                             <div className="hero-orb hero-orb-2"></div>
@@ -87,7 +79,7 @@ export default function Landing() {
                         <div className="section-badge"><Hand size={16} /> Sign Language</div>
                         <h2 className="section-title">What is Sign Language Detection?</h2>
                         <p className="section-subtitle">
-                            Sign language detection uses computer vision and machine learning to recognize hand gestures and convert them into readable text in real-time.
+                            Sense AI reads your handshape and the way you move it, then repairs the grammar ASL leaves out — dropped articles, the missing copula, question words that move to the front.
                         </p>
                     </div>
 
@@ -107,6 +99,18 @@ export default function Landing() {
                             <h3>Healthcare Access</h3>
                             <p>Facilitates better healthcare communication for patients who rely on sign language as their primary means of expression.</p>
                         </div>
+                    </div>
+
+                    <div className="sign-inventory">
+                        <h3>The signs it recognises today</h3>
+                        <ul className="sign-inventory-list">
+                            {SIGN_GLOSSES.map(g => <li key={g}>{g}</li>)}
+                        </ul>
+                        <p>
+                            Eight signs, chosen because each one stays reliably distinguishable
+                            from the others without a trained model. Fingerspelling and a larger
+                            vocabulary need a trained classifier, which is the next piece of work.
+                        </p>
                     </div>
 
                     <div className="section-cta">
@@ -132,7 +136,7 @@ export default function Landing() {
                         <div className="card info-card animate-fade-in-up stagger-1">
                             <div className="info-icon accent"><Eye size={24} /></div>
                             <h3>Visual Recognition</h3>
-                            <p>Identifies thousands of everyday objects from your camera feed with high accuracy and speed.</p>
+                            <p>Identifies 80 everyday object types from your camera feed, using a pre-trained detection model.</p>
                         </div>
                         <div className="card info-card animate-fade-in-up stagger-2">
                             <div className="info-icon accent"><Zap size={24} /></div>
@@ -231,7 +235,7 @@ export default function Landing() {
                 </div>
                 <div className="container cta-content">
                     <h2>Ready to Experience AI?</h2>
-                    <p>Join thousands of users leveraging the power of machine learning for real-time detection.</p>
+                    <p>Practise {SIGN_GLOSSES.length} signs with live feedback, and watch them become English sentences.</p>
                     <div className="cta-actions">
                         <Link to="/signup" className="btn btn-lg btn-on-gradient">
                             Create Account <ArrowRight size={18} />

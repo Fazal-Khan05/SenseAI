@@ -51,7 +51,10 @@
 
 .detect-grid {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
+    /* minmax(0, …) not plain fr: a grid track's implicit min-width is
+       min-content, so long unbroken text pushes the column wider than the
+       grid and the panel overflows the viewport. */
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
     gap: 24px;
     align-items: start;
 }
@@ -169,8 +172,10 @@
 
 .sentence-header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: 8px;
     margin-bottom: 12px;
 }
 
@@ -184,7 +189,16 @@
 
 .sentence-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 4px;
+}
+
+/* Three actions plus a title do not fit one narrow row; let the title take
+   its own line rather than truncating "Clear". */
+@media (max-width: 420px) {
+    .sentence-header h3 {
+        flex: 1 0 100%;
+    }
 }
 
 .sentence-text {
@@ -373,7 +387,7 @@
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .detect-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .detect-camera-section {
@@ -719,4 +733,149 @@
     font-size: var(--fs-xs);
     color: var(--text-muted);
     line-height: 1.6;
+}
+
+/* ===== COVERAGE =====
+   The practice guide and the progress display are the same object: each sign
+   carries its instruction and its state together. Coverage, never a score. */
+.coverage {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-faint);
+}
+
+.coverage-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.coverage-head h3 {
+    font-size: var(--fs-base);
+    font-weight: 700;
+    color: var(--text);
+}
+
+.coverage-count {
+    font-size: var(--fs-sm);
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+}
+
+.coverage-count strong {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.coverage-note {
+    margin: 8px 0 14px;
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.coverage-note--done {
+    color: var(--success);
+}
+
+.coverage-list {
+    display: grid;
+    gap: 2px;
+}
+
+.coverage-item {
+    display: grid;
+    grid-template-columns: minmax(92px, auto) minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 10px;
+    padding: 7px 8px;
+    margin: 0 -8px;
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-sm);
+    color: var(--text-secondary);
+    transition: background var(--transition-fast);
+}
+
+.coverage-item.is-attempted {
+    background: rgba(245, 158, 11, 0.06);
+}
+
+.coverage-chip {
+    justify-self: start;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border);
+    background: var(--bg-alt);
+    color: var(--text-secondary);
+    font-family: var(--font);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.coverage-chip:hover {
+    border-color: var(--primary);
+    color: var(--primary-dark);
+    background: var(--card);
+}
+
+/* The one celebratory moment in the product: a sign you can now produce. */
+.is-landed .coverage-chip,
+.is-confident .coverage-chip {
+    border-color: transparent;
+    /* Deeper than the button gradient: this is a 12px badge, and white on the
+       standard gradient measures 2.8:1. */
+    background: var(--gradient-primary-deep);
+    color: #fff;
+}
+
+.is-confident .coverage-chip {
+    box-shadow: var(--shadow-primary);
+}
+
+.coverage-hint {
+    min-width: 0;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    overflow-wrap: anywhere;
+}
+
+.coverage-coach {
+    display: block;
+    margin-top: 4px;
+    font-style: normal;
+    font-size: var(--fs-xs);
+    line-height: 1.6;
+    color: var(--warning-text);
+}
+
+.coverage-dots {
+    display: inline-flex;
+    gap: 3px;
+}
+
+.coverage-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background var(--transition-base);
+}
+
+.coverage-dot.filled {
+    background: var(--primary);
+}
+
+@media (max-width: 480px) {
+    .coverage-item {
+        grid-template-columns: 1fr auto;
+    }
+
+    .coverage-hint {
+        grid-column: 1 / -1;
+    }
 }

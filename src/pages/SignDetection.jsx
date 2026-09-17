@@ -9,8 +9,8 @@ import { useSignRecognition } from '../hooks/useSignRecognition';
 import { useSpeech } from '../hooks/useSpeech';
 import { glossToSentence, glossLine } from '../lib/glossToSentence';
 import { prefetchHandLandmarker } from '../lib/handLandmarks';
-import { SIGN_HINTS } from '../lib/wordSigns';
-import { VOCABULARY } from '../lib/signVocabulary';
+import SignCoverage from '../components/SignCoverage';
+import { usePracticeProgress } from '../hooks/usePracticeProgress';
 import './Detection.css';
 
 // Begin loading the model the moment this chunk is parsed — before React
@@ -28,7 +28,10 @@ export default function SignDetection() {
     const [speechOn, setSpeechOn] = useState(false);
     const [copied, setCopied] = useState(false);
 
-    const { glosses, live, modelState, progress, onFrame, reset, undo, pushGloss, STROKE_START } = useSignRecognition();
+    const { summary, noteCommit, noteAttempt } = usePracticeProgress();
+    const {
+        glosses, live, modelState, progress, onFrame, reset, undo, pushGloss, STROKE_START,
+    } = useSignRecognition({ onCommit: noteCommit, onAttempt: noteAttempt });
     const { videoRef, status, error, start, stop, isLive } = useCamera(onFrame);
 
     const sentence = useMemo(() => glossToSentence(glosses), [glosses]);
@@ -171,25 +174,7 @@ export default function SignDetection() {
                                 </div>
                             )}
 
-                            <details className="vocab-panel" open>
-                                <summary>How to sign these ({SIGN_HINTS.length})</summary>
-                                <ul className="sign-guide">
-                                    {SIGN_HINTS.map(({ gloss, hint }) => (
-                                        <li key={gloss}>
-                                            <button className="vocab-chip" onClick={() => pushGloss(gloss)}
-                                                title={`Add ${gloss} without signing it`}>
-                                                {gloss}
-                                            </button>
-                                            <span>{hint}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                                <p className="vocab-note">
-                                    Tap a sign to add it without the camera. Other glosses in the
-                                    vocabulary ({VOCABULARY.length}) are understood by the sentence
-                                    builder but have no gesture yet.
-                                </p>
-                            </details>
+                            <SignCoverage summary={summary} onAdd={pushGloss} />
                         </div>
                     </div>
                 </div>
