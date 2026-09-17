@@ -8,7 +8,6 @@
 
 .landing {
     --stock: #E7E8E3;
-    --stock-deep: #DCDED6;
     --ink: #17181B;
     --ink-soft: #4A4E52;
     --overprint: #1D5B3F;
@@ -31,7 +30,6 @@
 
 [data-theme="dark"] .landing {
     --stock: #14161A;
-    --stock-deep: #101217;
     --ink: #E7E8E3;
     --ink-soft: #A8AEB0;
     --overprint: #5FB98A;
@@ -571,7 +569,12 @@
 
 /* The wordmark is set as a running head, not a logo lockup. */
 .landing .logo-icon {
+    /* Hidden AND stripped: display:none alone would still ship the killed
+       gradient on this element's background. Removed properly when the nav
+       component itself converts. */
     display: none;
+    background: none;
+    box-shadow: none;
 }
 
 .landing .logo-text {
@@ -723,6 +726,7 @@
     border-top: 1px solid var(--rule-hair);
     margin-top: 32px;
     padding-top: 20px;
+    align-items: flex-start;
     text-align: left;
 }
 
@@ -730,16 +734,42 @@
     text-align: left;
 }
 
-/* FIX 5 (partial) — plate misregistration. The green sits a hair off the
-   black, which is the most legible signal of a two-plate overprint. This is
-   a real offset, not a texture faked in CSS. */
-.landing .section-mark .mark,
-.landing .rh-section,
-.landing .entry-label,
-.landing .margin-note b {
-    transform: translate(-0.6px, -0.5px);
+/* ===== PLATE MISREGISTRATION =====
+   Two plates that disagree, which is what misregistration actually is. Each
+   major rule is printed twice: the black plate as the element's own border,
+   and the green plate as a second line a pixel below and slightly short of
+   it. Nudging a lone green element does nothing, because nothing sits under
+   it to be out of register with. */
+.running-head,
+.grammar-hero,
+.grammar-section,
+.paradigm {
+    position: relative;
 }
 
+.running-head::after,
+.grammar-hero::after,
+.grammar-section::after,
+.paradigm::after {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: 3px;
+    bottom: -2px;
+    height: 1px;
+    background: var(--overprint);
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+/* The band's top edge is the same event at full strength: the black plate
+   showing through beneath the green. */
 .overprint-band {
     box-shadow: inset 0 2px 0 rgba(23, 24, 27, 0.16);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+    /* nothing animates here; the rule exists so the offset is never mistaken
+       for a transition artifact */
 }

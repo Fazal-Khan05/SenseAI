@@ -1,190 +1,417 @@
 {
-  "schemaVersion": 2,
-  "generatedAt": "2026-09-17T00:00:00Z",
-  "title": "Design System: Sense AI",
-  "extensions": {
-    "colorMeta": {
-      "clarity-blue": {
-        "role": "primary",
-        "displayName": "Clarity Blue",
-        "canonical": "#4F9CF9",
-        "tonalRamp": ["#0B2545", "#123A6B", "#1B5394", "#2A6FBF", "#3A7FD5", "#4F9CF9", "#7BB8FB", "#C7DEFD"]
-      },
-      "focus-violet": {
-        "role": "secondary",
-        "displayName": "Focus Violet",
-        "canonical": "#A084E8",
-        "tonalRamp": ["#1F1436", "#33215A", "#4A317F", "#6544A8", "#8265C9", "#A084E8", "#BFA8F0", "#E3D8F9"]
-      },
-      "attention-coral": {
-        "role": "tertiary",
-        "displayName": "Attention Coral",
-        "canonical": "#FF6B81",
-        "tonalRamp": ["#3D0C16", "#631421", "#8C1D2E", "#B82A3E", "#DE4459", "#FF6B81", "#FF8FA0", "#FFD1D9"]
-      },
-      "ink": {
-        "role": "neutral",
-        "displayName": "Ink",
-        "canonical": "#2D2D2D",
-        "tonalRamp": ["#0F0F0F", "#1C1C1C", "#2D2D2D", "#4A4A4A", "#6B7280", "#9CA3AF", "#E5E7EB", "#F9FAFC"]
-      },
-      "page": {
-        "role": "neutral",
-        "displayName": "Page",
-        "canonical": "#F9FAFC",
-        "tonalRamp": ["#0F1117", "#181B25", "#1E2130", "#2D3040", "#6B7080", "#A0A4B0", "#F1F3F8", "#F9FAFC"]
-      }
-    },
-    "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Hero headline. One per page, never repeated below the fold." },
-      "headline": { "displayName": "Headline", "purpose": "Section titles and page-level headings." },
-      "title": { "displayName": "Title", "purpose": "Card and panel headings." },
-      "body": { "displayName": "Body", "purpose": "All running copy; subtitles run 1.125rem/1.7 at a 600px measure." },
-      "label": { "displayName": "Label", "purpose": "Shape tags, metadata, measured values, chips. Never sentence-length." }
-    },
-    "shadows": [
-      { "name": "ambient-subtle", "value": "0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)", "purpose": "Small surfaces: sentence panels, inline containers." },
-      { "name": "ambient-standard", "value": "0 4px 12px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04)", "purpose": "Default for cards and the camera frame." },
-      { "name": "ambient-raised", "value": "0 10px 30px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04)", "purpose": "Glass panels, and cards under the cursor." },
-      { "name": "ambient-deep", "value": "0 20px 50px rgba(0,0,0,0.1)", "purpose": "Reserved for full-attention surfaces." },
-      { "name": "signal-glow", "value": "0 4px 14px rgba(79,156,249,0.3)", "purpose": "Coloured shadow beneath primary actions; the only shadow carrying hue." },
-      { "name": "accent-glow", "value": "0 4px 14px rgba(255,107,129,0.3)", "purpose": "The coral equivalent, for the object-detection primary action." }
-    ],
-    "motion": [
-      { "name": "fast", "value": "150ms ease", "purpose": "Colour and border changes on hover; input focus." },
-      { "name": "base", "value": "250ms ease", "purpose": "Default for buttons, cards, and overlay fades." },
-      { "name": "slow", "value": "400ms ease", "purpose": "Large surface transitions." },
-      { "name": "measure", "value": "width 500ms ease", "purpose": "Confidence and progress fills; the value should be felt filling, not snap." },
-      { "name": "meter", "value": "width 80ms linear", "purpose": "Live motion meter, which must track the hand without lag." }
-    ],
-    "breakpoints": [
-      { "name": "detection-stack", "value": "968px" },
-      { "name": "mobile", "value": "768px" },
-      { "name": "small", "value": "480px" }
-    ]
+ "schemaVersion": 2,
+ "generatedAt": "2026-09-17T00:00:00Z",
+ "title": "Design System: Sense AI",
+ "extensions": {
+  "conversionStatus": {
+   "world": "The Interlinear Gloss",
+   "scope": "whole system",
+   "converted": [
+    "src/pages/Landing.jsx (plus the landing-scoped restyling of Navbar and Footer)"
+   ],
+   "pending": [
+    "dashboard",
+    "practice",
+    "sign detection",
+    "object detection",
+    "auth (signup / login / OTP)"
+   ],
+   "note": "Tokens are declared on the .landing scope rather than :root so the new world and the outgoing 'Patient Tutor' world can coexist during conversion. Inter is still loaded off the render path in index.html for the unconverted screens."
   },
-  "components": [
-    {
-      "name": "Primary Button",
-      "kind": "button",
-      "refersTo": "button-primary",
-      "description": "The system's own voice. Primary action on any surface.",
-      "html": "<button class=\"ds-btn-primary\">Start Camera</button>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 28px; border: none; border-radius: 9999px; background: linear-gradient(135deg, #4F9CF9, #A084E8); color: #fff; font-family: Inter, -apple-system, sans-serif; font-size: 1rem; font-weight: 600; box-shadow: 0 4px 14px rgba(79,156,249,0.3); cursor: pointer; transition: all 250ms ease; } .ds-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(79,156,249,0.4); } .ds-btn-primary:active { transform: translateY(0); } .ds-btn-primary:focus-visible { outline: 2px solid #4F9CF9; outline-offset: 2px; }"
-    },
-    {
-      "name": "Outline Button",
-      "kind": "button",
-      "refersTo": "button-outline",
-      "description": "The secondary action beside a primary. Inverts to a solid fill on hover.",
-      "html": "<button class=\"ds-btn-outline\">Try Object Detection</button>",
-      "css": ".ds-btn-outline { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border: 2px solid #4F9CF9; border-radius: 9999px; background: transparent; color: #4F9CF9; font-family: Inter, -apple-system, sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 250ms ease; } .ds-btn-outline:hover { background: #4F9CF9; color: #fff; transform: translateY(-2px); box-shadow: 0 4px 14px rgba(79,156,249,0.3); } .ds-btn-outline:focus-visible { outline: 2px solid #4F9CF9; outline-offset: 2px; }"
-    },
-    {
-      "name": "Ghost Button",
-      "kind": "button",
-      "refersTo": "button-ghost",
-      "description": "Navigation and toolbar actions. Text-only until hovered.",
-      "html": "<button class=\"ds-btn-ghost\">Clear</button>",
-      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: none; border-radius: 9999px; background: transparent; color: #6B7280; font-family: Inter, -apple-system, sans-serif; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 150ms ease; } .ds-btn-ghost:hover { color: #4F9CF9; background: rgba(79,156,249,0.08); } .ds-btn-ghost:disabled { opacity: 0.5; cursor: not-allowed; } .ds-btn-ghost:focus-visible { outline: 2px solid #4F9CF9; outline-offset: 2px; }"
-    },
-    {
-      "name": "Card",
-      "kind": "card",
-      "refersTo": "card",
-      "description": "The default raised surface. Ambient shadow does the separating; the border is a faint hairline.",
-      "html": "<div class=\"ds-card\"><h3>Sign Language Detection</h3><p>Detect and translate hand gestures into text using your camera.</p></div>",
-      "css": ".ds-card { background: #fff; border: 1px solid rgba(229,231,235,0.5); border-radius: 16px; padding: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04); font-family: Inter, -apple-system, sans-serif; transition: all 250ms ease; } .ds-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04); transform: translateY(-4px); } .ds-card h3 { margin: 0 0 12px; font-size: 1.25rem; font-weight: 700; color: #2D2D2D; } .ds-card p { margin: 0; font-size: 1rem; line-height: 1.6; color: #6B7280; }"
-    },
-    {
-      "name": "Glass Panel",
-      "kind": "card",
-      "refersTo": "card-glass",
-      "description": "Auth screens and panels floating over decorative background shapes.",
-      "html": "<div class=\"ds-card-glass\"><h3>Welcome Back</h3><p>Sign in to continue to your dashboard</p></div>",
-      "css": ".ds-card-glass { background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04); font-family: Inter, -apple-system, sans-serif; } .ds-card-glass h3 { margin: 0 0 8px; font-size: 1.25rem; font-weight: 700; color: #2D2D2D; } .ds-card-glass p { margin: 0; color: #6B7280; font-size: 1rem; }"
-    },
-    {
-      "name": "Floating-Label Input",
-      "kind": "input",
-      "refersTo": "input",
-      "description": "The label rides from centre to the top edge on focus or fill, interrupting the border it crosses.",
-      "html": "<div class=\"ds-field\"><input id=\"ds-email\" class=\"ds-input\" type=\"email\" placeholder=\" \" /><label class=\"ds-label\" for=\"ds-email\">Email Address</label></div>",
-      "css": ".ds-field { position: relative; font-family: Inter, -apple-system, sans-serif; } .ds-input { width: 100%; padding: 16px 18px; border: 2px solid #E5E7EB; border-radius: 12px; font-size: 1rem; background: #fff; color: #2D2D2D; transition: all 150ms ease; } .ds-input:focus { outline: none; border-color: #4F9CF9; box-shadow: 0 0 0 4px rgba(79,156,249,0.1); } .ds-label { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #9CA3AF; font-size: 1rem; pointer-events: none; background: #fff; padding: 0 4px; transition: all 150ms ease; } .ds-input:focus ~ .ds-label, .ds-input:not(:placeholder-shown) ~ .ds-label { top: -1px; font-size: 0.75rem; color: #4F9CF9; font-weight: 500; }"
-    },
-    {
-      "name": "Nav Link",
-      "kind": "nav",
-      "refersTo": "nav-link",
-      "description": "Pill ghost link. Active route carries aria-current.",
-      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link ds-nav-link--active\" href=\"#\" aria-current=\"page\">Dashboard</a><a class=\"ds-nav-link\" href=\"#\">Contact</a></nav>",
-      "css": ".ds-nav { display: flex; gap: 8px; font-family: Inter, -apple-system, sans-serif; } .ds-nav-link { padding: 8px 16px; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; color: #6B7280; text-decoration: none; transition: all 150ms ease; } .ds-nav-link:hover { color: #4F9CF9; background: rgba(79,156,249,0.08); } .ds-nav-link--active { color: #4F9CF9; } .ds-nav-link:focus-visible { outline: 2px solid #4F9CF9; outline-offset: 2px; }"
-    },
-    {
-      "name": "Confidence Bar",
-      "kind": "custom",
-      "refersTo": "confidence-bar",
-      "description": "Signature element. Every measurement the product reports uses this one shape: detection confidence, download progress, hold progress.",
-      "html": "<div class=\"ds-confidence\"><span class=\"ds-confidence-label\">Hello</span><span class=\"ds-confidence-track\"><span class=\"ds-confidence-fill\" style=\"width:86%\"></span></span><span class=\"ds-confidence-value\">86%</span></div>",
-      "css": ".ds-confidence { display: flex; align-items: center; gap: 10px; font-family: Inter, -apple-system, sans-serif; } .ds-confidence-label { font-size: 0.875rem; font-weight: 600; color: #2D2D2D; } .ds-confidence-track { flex: 1; height: 6px; min-width: 80px; border-radius: 9999px; background: #E5E7EB; overflow: hidden; } .ds-confidence-fill { display: block; height: 100%; border-radius: 9999px; background: linear-gradient(135deg, #4F9CF9, #A084E8); transition: width 500ms ease; } .ds-confidence-value { font-size: 0.75rem; font-variant-numeric: tabular-nums; color: #9CA3AF; }"
-    },
-    {
-      "name": "Live Readout Tag",
-      "kind": "chip",
-      "refersTo": "live-tag",
-      "description": "Signature element. Shows what the classifier currently measures, so a learner sees why a sign did not register.",
-      "html": "<span class=\"ds-tag\">FLAT</span><span class=\"ds-tag ds-tag--subtle\">ready — make a sign</span>",
-      "css": ".ds-tag { display: inline-block; padding: 3px 8px; margin-right: 6px; border-radius: 9999px; background: rgba(79,156,249,0.08); color: #4F9CF9; font-family: Inter, -apple-system, sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; white-space: nowrap; } .ds-tag--subtle { background: #F1F3F8; color: #9CA3AF; }"
-    },
-    {
-      "name": "Toggle Switch",
-      "kind": "custom",
-      "refersTo": "toggle",
-      "description": "Used for speech output. A real button with role=switch, not a styled div.",
-      "html": "<button class=\"ds-toggle ds-toggle--on\" role=\"switch\" aria-checked=\"true\" aria-label=\"Read the sentence aloud\"></button>",
-      "css": ".ds-toggle { width: 48px; height: 26px; border: none; border-radius: 13px; background: #E5E7EB; position: relative; cursor: pointer; transition: background 150ms ease; } .ds-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: transform 150ms ease; } .ds-toggle--on { background: #4F9CF9; } .ds-toggle--on::after { transform: translateX(22px); } .ds-toggle:focus-visible { outline: 2px solid #4F9CF9; outline-offset: 2px; }"
-    }
-  ],
-  "narrative": {
-    "northStar": "The Patient Tutor",
-    "overview": "Sense AI watches a learner practise American Sign Language and tells them what it saw. That job sets the entire visual temperature: the interface is a practice partner, never an examiner. A sign that does not register is the most common event in the product, so every surface is built so that outcome reads as try again rather than you failed.\n\nThe palette is soft and cool — a blue-to-violet gradient does the signalling work, with a single warm coral reserved for genuine attention. Surfaces are light, generously padded and gently rounded; nothing is sharp enough to read as a warning. Depth comes from soft ambient shadow rather than hard edges, so panels feel like stacked paper on a bright desk. Type is a single family, Inter, working across a wide weight range.\n\nFour confirmed anti-references: clinical medical software, consumer AI hype, generic dashboard templates, and childish learning apps.",
-    "keyCharacteristics": [
-      "Cool blue-violet gradient as the signal; one warm coral held in reserve",
-      "Fully rounded (pill) actions and 16px surfaces — nothing sharp",
-      "Soft ambient shadow for depth; no hard borders carrying structure",
-      "One typeface, wide weight range, tight display tracking",
-      "Light and dark are equal citizens, driven entirely by tokens",
-      "The interface explains what it measured rather than only what it concluded"
-    ],
-    "rules": [
-      { "name": "The Warm-Once Rule", "body": "Coral is the only warm hue in the system, and no screen carries more than one coral element. If a second thing needs emphasis, it takes Clarity Blue.", "section": "colors" },
-      { "name": "The Theme-Token Rule", "body": "Every surface, border and shadow reads from a theme-aware token. Hardcoding a literal colour is how dark mode breaks: the value cannot follow the theme, so it needs a hand-written patch, and the next component needs another one. There are zero such patches and there must stay zero.", "section": "colors" },
-      { "name": "The No-Alarm Rule", "body": "Error red is reserved for form validation and load failures. Detection never uses it: an unrecognised sign is an ordinary outcome of practice, not an error.", "section": "colors" },
-      { "name": "The One Family Rule", "body": "Inter does every job. A second typeface is not a missing feature — hierarchy is weight and size.", "section": "typography" },
-      { "name": "The Tight-Display Rule", "body": "Negative tracking (-1px) applies only at display size. Applied to body text it reads as cramped rather than confident.", "section": "typography" },
-      { "name": "The Generous-Padding Rule", "body": "Interior padding never drops below 20px on a surface that holds text. Tight padding is what makes an interface feel like an admin panel.", "section": "layout" },
-      { "name": "The Softer-In-Dark Rule", "body": "Dark mode does not reuse light-mode shadows. Every step deepens because a shadow tuned for a white ground disappears on a dark one.", "section": "elevation" },
-      { "name": "The No-Sharp-Corners Rule", "body": "Nothing in this interface has a square corner. A right angle reads as a warning or a system dialog, and neither belongs in a practice tool.", "section": "shapes" }
-    ],
-    "dos": [
-      "Do read every colour, surface, border and shadow from a theme token. The system has zero [data-theme=\"dark\"] component patches; keep it that way.",
-      "Do use the primary gradient for primary actions and every measurement fill. Flat blue is for strokes and text, not for filled actions.",
-      "Do keep actions fully rounded (9999px) and surfaces at 16px.",
-      "Do express depth with ambient shadow and let borders stay faint hairlines.",
-      "Do give text-bearing surfaces at least 20px of interior padding.",
-      "Do show what was measured, not only what was concluded — confidence, phase, and live readings are features, not debug output.",
-      "Do keep a visible focus indicator on every interactive element; the base reset removes outlines, so :focus-visible restores them deliberately.",
-      "Do honour prefers-reduced-motion: animations collapse to near-zero and no content is left stranded at opacity: 0."
-    ],
-    "donts": [
-      "Don't hardcode a literal colour, surface or border value in a component.",
-      "Don't introduce a second typeface. Hierarchy is weight and size.",
-      "Don't use a square corner anywhere.",
-      "Don't put more than one coral element on a screen, or use coral for anything that is not genuine attention.",
-      "Don't colour detection failure red. An unrecognised sign is a normal outcome of practice.",
-      "Don't apply display tracking (-1px) below display size.",
-      "Don't reuse light-mode shadow values in dark mode.",
-      "Don't state a metric the code cannot substantiate — accuracy, latency, vocabulary size or user counts. Every number on screen must trace to a real measurement."
+  "colorMeta": {
+   "stock": {
+    "role": "neutral",
+    "displayName": "Duplicator Stock",
+    "canonical": "#E7E8E3",
+    "darkValue": "#14161A",
+    "tonalRamp": [
+     "#191A16",
+     "#2C2E28",
+     "#42453C",
+     "#5B5E54",
+     "#7A7D73",
+     "#A0A398",
+     "#C6C8C0",
+     "#F2F3EE"
     ]
+   },
+   "ink": {
+    "role": "neutral",
+    "displayName": "Printing Black",
+    "canonical": "#17181B",
+    "darkValue": "#E7E8E3",
+    "tonalRamp": [
+     "#0B0C0E",
+     "#17181B",
+     "#2A2C31",
+     "#3F4248",
+     "#585C63",
+     "#797E86",
+     "#A6ABB3",
+     "#D9DCE1"
+    ]
+   },
+   "ink-soft": {
+    "role": "neutral",
+    "displayName": "Soft Black",
+    "canonical": "#4A4E52",
+    "darkValue": "#A8AEB0",
+    "tonalRamp": [
+     "#101214",
+     "#1E2124",
+     "#2C3033",
+     "#3B3F43",
+     "#4A4E52",
+     "#6E7378",
+     "#9AA0A5",
+     "#CFD4D8"
+    ]
+   },
+   "overprint": {
+    "role": "primary",
+    "displayName": "Bottle Green Overprint",
+    "canonical": "#1D5B3F",
+    "darkValue": "#5FB98A",
+    "tonalRamp": [
+     "#082016",
+     "#0E3324",
+     "#154632",
+     "#1D5B3F",
+     "#2A7C56",
+     "#3D9E70",
+     "#76C39C",
+     "#C3E4D2"
+    ]
+   },
+   "overprint-pale": {
+    "role": "primary",
+    "displayName": "Pale Overprint",
+    "canonical": "#BFD3C6",
+    "darkValue": "#24402F",
+    "tonalRamp": [
+     "#16241C",
+     "#25392D",
+     "#37503F",
+     "#4C6B56",
+     "#6A8A75",
+     "#8FAC99",
+     "#BFD3C6",
+     "#E6F0EA"
+    ]
+   },
+   "rule": {
+    "role": "neutral",
+    "displayName": "Structural Rule",
+    "canonical": "rgba(23, 24, 27, 0.22)",
+    "darkValue": "rgba(231, 232, 227, 0.24)",
+    "note": "Derived from ink at 22% \u2014 secondary containment only. No tonal ramp; it is an alpha of the ink."
+   },
+   "rule-hair": {
+    "role": "neutral",
+    "displayName": "Hairline Rule",
+    "canonical": "rgba(23, 24, 27, 0.12)",
+    "darkValue": "rgba(231, 232, 227, 0.13)",
+    "note": "Derived from ink at 12% \u2014 row separation only. No tonal ramp; it is an alpha of the ink."
+   }
+  },
+  "typographyMeta": {
+   "display": {
+    "displayName": "Display Gloss",
+    "purpose": "The gloss form of a lead interlinear example. Two per page at most \u2014 the hero and the overprint band."
+   },
+   "headline": {
+    "displayName": "Free Translation",
+    "purpose": "The free translation of a lead example, in single quotation marks, always subordinate to the gloss above it."
+   },
+   "title": {
+    "displayName": "Section Heading",
+    "purpose": "Section headings preceded by a green section mark, and the overprint band's heading."
+   },
+   "body": {
+    "displayName": "Running Prose",
+    "purpose": "Body copy in the text column, capped at a 62ch measure."
+   },
+   "parse": {
+    "displayName": "Morpheme Parse",
+    "purpose": "The small-caps morpheme row under a gloss token, set in the overprint. True small caps, never scaled-down uppercase."
+   },
+   "label": {
+    "displayName": "Typed Label",
+    "purpose": "Entry labels, marginal-note headings, footer column headings. Never sentence-length."
+   },
+   "action": {
+    "displayName": "Action Text",
+    "purpose": "Button text only."
+   },
+   "note": {
+    "displayName": "Annotation",
+    "purpose": "Marginal annotations, paradigm caption, colophon, footer copy \u2014 the grammar's voice around the examples."
+   }
+  },
+  "fonts": [
+   {
+    "family": "Alegreya",
+    "role": "prose",
+    "source": "self-hosted",
+    "files": [
+     "/fonts/alegreya-normal-400-900.woff2",
+     "/fonts/alegreya-italic-400-900.woff2"
+    ],
+    "note": "Variable, 400\u2013900, roman and italic. Chosen for true small capitals, which the glossing convention requires."
+   },
+   {
+    "family": "Courier Prime",
+    "role": "typed",
+    "source": "self-hosted",
+    "files": [
+     "/fonts/courier-prime-normal-400.woff2",
+     "/fonts/courier-prime-normal-700.woff2",
+     "/fonts/courier-prime-italic-400.woff2"
+    ],
+    "note": "Carries every gloss, index, label and measurement."
+   }
+  ],
+  "shadows": [
+   {
+    "name": "plate-line",
+    "value": "inset 0 2px 0 rgba(23, 24, 27, 0.16)",
+    "purpose": "The only box-shadow in the system, and not a shadow: an inset ink line at the top edge of the overprint band, reading as ink bite where the second plate meets the stock. The system casts zero drop shadows."
+   }
+  ],
+  "motion": [
+   {
+    "name": "state-change",
+    "value": "160ms ease",
+    "purpose": "The system's only transition. Applied to background-color, color and border-color on actions and links. Nothing lifts, scales, glows or translates on hover."
+   },
+   {
+    "name": "misregistration",
+    "value": "translate(-0.6px, -0.5px)",
+    "purpose": "Static plate offset applied to green apparatus (section marks, entry labels, marginal-note headings, running-head section) so the second ink sits a half-pixel off the black. Real geometry, never a faked paper texture."
+   }
+  ],
+  "breakpoints": [
+   {
+    "name": "fold",
+    "value": "900px",
+    "purpose": "Two columns collapse to one; the margin column folds under the text it annotates, swapping its left rule for a top rule and laying notes out as an auto-fit row."
+   },
+   {
+    "name": "stack",
+    "value": "560px",
+    "purpose": "Example numbers move above their gloss; the paradigm drops to two columns with the note wrapping under the form."
+   }
+  ],
+  "rules": [
+   {
+    "name": "sheet-max-width",
+    "value": "1320px",
+    "purpose": "The page block is capped and left-hung (margin: 0), not centred."
+   },
+   {
+    "name": "prose-measure",
+    "value": "62ch",
+    "purpose": "Body copy measure."
+   },
+   {
+    "name": "statement-measure",
+    "value": "34ch",
+    "purpose": "The hero's single-sentence statement."
+   },
+   {
+    "name": "band-measure",
+    "value": "22ch",
+    "purpose": "The overprint band's heading."
+   },
+   {
+    "name": "focus-ring",
+    "value": "2px solid overprint, 3px offset, 0 radius",
+    "purpose": "Scoped deliberately; unscoped, the global theme repaints focus from the removed blue."
+   }
+  ]
+ },
+ "components": [
+  {
+   "name": "Primary Action",
+   "kind": "button",
+   "refersTo": "action-primary",
+   "description": "The page's primary action, set as grammar rather than chrome. In the hero it sits inline at the end of the reading line.",
+   "html": "<a href=\"#\" class=\"ds-act\">Start practising</a>",
+   "css": ".ds-act { display: inline-block; font-family: 'Courier Prime', ui-monospace, 'Courier New', monospace; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 12px 22px; border: 1px solid #17181B; border-radius: 0; background: #17181B; color: #E7E8E3; transition: background 160ms ease, color 160ms ease, border-color 160ms ease; } .ds-act:hover { background: #1D5B3F; border-color: #1D5B3F; color: #E7E8E3; } .ds-act:focus-visible { outline: 2px solid #1D5B3F; outline-offset: 3px; border-radius: 0; }"
+  },
+  {
+   "name": "Quiet Action",
+   "kind": "button",
+   "refersTo": "action-quiet",
+   "description": "The secondary action beside a primary: same geometry, no fill, a 22% ink stroke.",
+   "html": "<a href=\"#\" class=\"ds-act-quiet\">Read the paradigm</a>",
+   "css": ".ds-act-quiet { display: inline-block; font-family: 'Courier Prime', ui-monospace, 'Courier New', monospace; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 12px 22px; border: 1px solid rgba(23, 24, 27, 0.22); border-radius: 0; background: transparent; color: #17181B; transition: color 160ms ease, border-color 160ms ease; } .ds-act-quiet:hover { background: transparent; color: #1D5B3F; border-color: #1D5B3F; } .ds-act-quiet:focus-visible { outline: 2px solid #1D5B3F; outline-offset: 3px; }"
+  },
+  {
+   "name": "Text Action",
+   "kind": "button",
+   "refersTo": "action-text",
+   "description": "The lightest route out of a section: no box, a typed label over a hairline underline.",
+   "html": "<a href=\"#\" class=\"ds-act-text\">Or try object detection &rarr;</a>",
+   "css": ".ds-act-text { display: inline-block; font-family: 'Courier Prime', ui-monospace, 'Courier New', monospace; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: #4A4E52; border-bottom: 1px solid rgba(23, 24, 27, 0.22); padding-bottom: 3px; transition: color 160ms ease, border-color 160ms ease; } .ds-act-text:hover { color: #1D5B3F; border-bottom-color: #1D5B3F; } .ds-act-text:focus-visible { outline: 2px solid #1D5B3F; outline-offset: 3px; }"
+  },
+  {
+   "name": "Interlinear Example",
+   "kind": "custom",
+   "refersTo": "display",
+   "description": "The system's atom and its proof: hanging example number, typed gloss forms with small-caps morpheme parses beneath, free translation in single quotes below. All rows hang from one left margin.",
+   "html": "<div class=\"ds-example\"><span class=\"ds-example-number\">(1)</span><div><div class=\"ds-gloss-line\"><span class=\"ds-gloss-token\"><span class=\"ds-gloss-form\">ME</span><span class=\"ds-gloss-parse\">1sg</span></span><span class=\"ds-gloss-token\"><span class=\"ds-gloss-form\">SORRY</span><span class=\"ds-gloss-parse\">apologise</span></span></div><p class=\"ds-free-translation\">&lsquo;I am sorry.&rsquo;</p></div></div>",
+   "css": ".ds-example { display: grid; grid-template-columns: auto 1fr; column-gap: clamp(14px, 2vw, 30px); align-items: start; color: #17181B; } .ds-example-number { font-family: 'Courier Prime', ui-monospace, monospace; font-size: clamp(0.9rem, 1.4vw, 1.15rem); color: #4A4E52; padding-top: 0.55em; font-variant-numeric: tabular-nums; } .ds-gloss-line { display: flex; flex-wrap: wrap; column-gap: clamp(20px, 3.2vw, 52px); row-gap: 4px; } .ds-gloss-token { display: flex; flex-direction: column; align-items: flex-start; } .ds-gloss-form { font-family: 'Courier Prime', ui-monospace, monospace; font-weight: 700; font-size: clamp(2rem, 6.2vw, 4.4rem); letter-spacing: 0.04em; line-height: 1.1; color: #17181B; } .ds-gloss-parse { font-family: 'Alegreya', Georgia, serif; font-variant-caps: small-caps; font-feature-settings: 'smcp' 1; font-size: 0.78em; font-weight: 500; letter-spacing: 0.06em; text-transform: lowercase; color: #1D5B3F; margin-top: 0.3em; transform: translate(-0.6px, -0.5px); } .ds-free-translation { font-family: 'Alegreya', Georgia, serif; font-style: italic; font-size: clamp(1.5rem, 3.6vw, 2.6rem); line-height: 1.25; margin: 0.34em 0 0; color: #17181B; }"
+  },
+  {
+   "name": "Marginal Annotation",
+   "kind": "custom",
+   "refersTo": "marginal-note",
+   "description": "The margin column's annotation \u2014 what replaces badge pills. Bounded by one left rule; no background, box, icon or radius.",
+   "html": "<aside class=\"ds-marginalia\"><p class=\"ds-margin-note\"><b>On device</b>Inference runs in your browser. No video, frame or landmark leaves the machine.</p><p class=\"ds-margin-note\"><b>Access</b>No account needed to practise.</p></aside>",
+   "css": ".ds-marginalia { border-left: 1px solid rgba(23, 24, 27, 0.22); padding-left: clamp(14px, 1.6vw, 22px); display: grid; gap: 20px; align-content: start; max-width: 260px; } .ds-margin-note { font-family: 'Courier Prime', ui-monospace, monospace; font-size: 0.78rem; line-height: 1.55; color: #1D5B3F; margin: 0; } .ds-margin-note b { display: block; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; color: #1D5B3F; transform: translate(-0.6px, -0.5px); }"
+  },
+  {
+   "name": "Hanging Entry",
+   "kind": "custom",
+   "refersTo": "entry-row",
+   "description": "Replaces the icon-tile grid. A two-column hanging indent with an uppercase overprint label and body text, separated by hairline rules.",
+   "html": "<div class=\"ds-entry-list\"><div class=\"ds-entry\"><span class=\"ds-entry-label\">Handshape</span><p class=\"ds-entry-text\">Read by a trained classifier, not by hand-written rules.</p></div><div class=\"ds-entry\"><span class=\"ds-entry-label\">Movement</span><p class=\"ds-entry-text\"><strong>THANK-YOU and PLEASE are the same flat hand</strong> &mdash; only the movement separates them.</p></div></div>",
+   "css": ".ds-entry-list { display: grid; gap: 0; } .ds-entry { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: clamp(14px, 2vw, 28px); padding: 18px 0; border-top: 1px solid rgba(23, 24, 27, 0.12); } .ds-entry:last-child { border-bottom: 1px solid rgba(23, 24, 27, 0.12); } .ds-entry-label { font-family: 'Courier Prime', ui-monospace, monospace; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #1D5B3F; padding-top: 0.2em; white-space: nowrap; transform: translate(-0.6px, -0.5px); } .ds-entry-text { font-family: 'Alegreya', Georgia, serif; font-size: 1rem; line-height: 1.6; color: #17181B; margin: 0; } .ds-entry-text strong { font-weight: 700; }"
+  },
+  {
+   "name": "Paradigm Table",
+   "kind": "custom",
+   "refersTo": "body",
+   "description": "The vocabulary stated as a grammar's paradigm: zero-padded index, typed form, Alegreya note. Bounded top and bottom by ink rules.",
+   "html": "<div class=\"ds-paradigm\"><div class=\"ds-paradigm-row\"><span class=\"ds-paradigm-index\">01</span><span class=\"ds-paradigm-form\">HELLO</span><span class=\"ds-paradigm-note\">Flat hand, sweep sideways in one direction</span></div><div class=\"ds-paradigm-row\"><span class=\"ds-paradigm-index\">02</span><span class=\"ds-paradigm-form\">THANK-YOU</span><span class=\"ds-paradigm-note\">Flat hand at chin, move straight down</span></div></div>",
+   "css": ".ds-paradigm { border-top: 1px solid #17181B; border-bottom: 1px solid #17181B; } .ds-paradigm-row { display: grid; grid-template-columns: 2.2rem minmax(0, 8rem) minmax(0, 1.6fr); column-gap: clamp(12px, 2vw, 26px); align-items: baseline; padding: 11px 0; } .ds-paradigm-row + .ds-paradigm-row { border-top: 1px solid rgba(23, 24, 27, 0.12); } .ds-paradigm-index { font-family: 'Courier Prime', ui-monospace, monospace; font-size: 0.78rem; color: #4A4E52; font-variant-numeric: tabular-nums; } .ds-paradigm-form { font-family: 'Courier Prime', ui-monospace, monospace; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.05em; color: #17181B; } .ds-paradigm-note { font-family: 'Alegreya', Georgia, serif; font-size: 0.95rem; line-height: 1.5; color: #4A4E52; }"
+  },
+  {
+   "name": "Section Mark",
+   "kind": "custom",
+   "refersTo": "title",
+   "description": "Opens every section: a green section number on the baseline beside an Alegreya heading. The green sits a half-pixel off the black.",
+   "html": "<div class=\"ds-section-mark\"><span class=\"ds-mark\">&sect;2</span><h2>ASL is not English with different hands</h2></div>",
+   "css": ".ds-section-mark { display: flex; align-items: baseline; gap: 16px; } .ds-section-mark .ds-mark { font-family: 'Courier Prime', ui-monospace, monospace; font-size: 0.8rem; letter-spacing: 0.14em; color: #1D5B3F; white-space: nowrap; transform: translate(-0.6px, -0.5px); } .ds-section-mark h2 { font-family: 'Alegreya', Georgia, serif; font-size: clamp(1.5rem, 2.8vw, 2.1rem); font-weight: 700; line-height: 1.15; color: #17181B; margin: 0; overflow-wrap: anywhere; }"
+  },
+  {
+   "name": "Navigation Link",
+   "kind": "nav",
+   "refersTo": "nav-link",
+   "description": "Square, typed, uppercase; takes the overprint and a 1px bottom rule on hover. No pill, no background wash.",
+   "html": "<nav class=\"ds-nav\"><a href=\"#\" class=\"ds-nav-link\">Home</a><a href=\"#\" class=\"ds-nav-link\">Features</a><a href=\"#\" class=\"ds-nav-link\">How it works</a></nav>",
+   "css": ".ds-nav { display: flex; align-items: center; } .ds-nav-link { font-family: 'Courier Prime', ui-monospace, monospace; font-size: 0.76rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; color: #4A4E52; border-radius: 0; padding: 6px 0; margin: 0 14px; border-bottom: 1px solid transparent; transition: color 160ms ease, border-color 160ms ease; } .ds-nav-link:hover { color: #1D5B3F; background: transparent; border-bottom-color: #1D5B3F; } .ds-nav-link:focus-visible { outline: 2px solid #1D5B3F; outline-offset: 3px; }"
+  },
+  {
+   "name": "Overprint Band",
+   "kind": "custom",
+   "refersTo": "overprint-band",
+   "description": "The one region per page where the second ink owns the ground outright. Carries a stock heading, a reversed interlinear example and one reversed action.",
+   "html": "<section class=\"ds-band\"><h2 class=\"ds-band-heading\">Practise 8 signs and watch them become sentences.</h2><div class=\"ds-band-example\"><span class=\"ds-band-number\">(2)</span><div><span class=\"ds-band-form\">I-LOVE-YOU</span><span class=\"ds-band-parse\">1sg-love-2sg</span><p class=\"ds-band-translation\">&lsquo;I love you.&rsquo;</p></div></div><a href=\"#\" class=\"ds-band-act\">Start practising</a></section>",
+   "css": ".ds-band { background: #1D5B3F; color: #E7E8E3; padding: clamp(56px, 9vh, 104px) 32px; box-shadow: inset 0 2px 0 rgba(23, 24, 27, 0.16); } .ds-band-heading { font-family: 'Alegreya', Georgia, serif; font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; line-height: 1.15; max-width: 22ch; margin: 0 0 clamp(24px, 4vh, 36px); } .ds-band-example { display: grid; grid-template-columns: auto 1fr; column-gap: clamp(14px, 2vw, 30px); align-items: start; } .ds-band-number { font-family: 'Courier Prime', ui-monospace, monospace; color: rgba(231, 232, 227, 0.72); padding-top: 0.55em; font-variant-numeric: tabular-nums; } .ds-band-form { display: block; font-family: 'Courier Prime', ui-monospace, monospace; font-weight: 700; font-size: clamp(2rem, 6.2vw, 4.4rem); letter-spacing: 0.04em; line-height: 1.1; color: #E7E8E3; } .ds-band-parse { display: block; font-family: 'Alegreya', Georgia, serif; font-variant-caps: small-caps; font-feature-settings: 'smcp' 1; font-size: 0.78em; font-weight: 500; letter-spacing: 0.06em; text-transform: lowercase; color: #BFD3C6; margin-top: 0.3em; } .ds-band-translation { font-family: 'Alegreya', Georgia, serif; font-style: italic; font-size: clamp(1.5rem, 3.6vw, 2.6rem); line-height: 1.25; margin: 0.34em 0 0; color: #E7E8E3; } .ds-band-act { display: inline-block; margin-top: clamp(22px, 3vh, 34px); font-family: 'Courier Prime', ui-monospace, monospace; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 12px 22px; border: 1px solid #E7E8E3; border-radius: 0; background: #E7E8E3; color: #1D5B3F; transition: background 160ms ease, color 160ms ease; } .ds-band-act:hover { background: transparent; color: #E7E8E3; border-color: #E7E8E3; }"
   }
+ ],
+ "narrative": {
+  "northStar": "The Interlinear Gloss",
+  "overview": "Sense AI's output is already a typographic form with centuries of use behind it: interlinear glossed text \u2014 the signed form on one line, its morpheme parse directly beneath, the free translation in single quotes below that, every row hard-aligned on a single left margin. So the interface is not a page about a grammar engine. It is set as a descriptive grammar: numbered examples, section marks, a paradigm table, hanging entries, and annotations in the margin. The proof and the form are the same object, which is why the first thing a visitor meets is example (1) rather than a sales line.\n\nThe materials are the mimeographed grammar and the overprinted atlas plate \u2014 two inks laid on cool pale duplicator stock. Printing black does the reading; one saturated bottle green is the overprint, and it owns the apparatus: section marks, morpheme parses, entry labels, marginal notes, every hover and focus, and one full band near the close. Nothing is round, nothing is raised, and nothing floats. Structure is carried entirely by hairline rules at three declared weights and by the boundary between the two inks. Alegreya carries prose and headings because its true small capitals are what the glossing convention requires; Courier Prime carries every gloss, label, number and measurement, because a duplicated grammar's examples were typed.\n\nThis world deliberately refuses two things at once. It refuses the centred hero-with-feature-triplet arrangement this category ships \u2014 there is no centred column anywhere, no icon tile, no card grid, no badge pill, and no gradient. It also refuses that arrangement's predictable opposite, mono-on-black developer brutalism. And within its own genre it refuses the softest rendition: cream, parchment, kraft and lamplight are out, because that is the register every model reaches for. The stock is cool grey and the green is cold.\n\nConversion status: this is the system's world going forward, but only the landing page runs it today. The dashboard, practice, detection and auth screens still run the outgoing 'Patient Tutor' world (Inter, blue/violet gradient, pill buttons, 16px cards, ambient shadow) and are converted in later passes. The new world's tokens are declared on the .landing scope rather than :root precisely so the two can coexist during that conversion. Nothing from the outgoing world is a precedent for new work.",
+  "keyCharacteristics": [
+   "Two inks only \u2014 printing black and one bottle-green overprint \u2014 on cool grey duplicator stock",
+   "Zero radius, zero drop shadow, zero gradient: structure is hairline rules and the second ink",
+   "Two families with one job each: Alegreya for what a human wrote, Courier Prime for what the machine produced",
+   "Interlinear examples at display scale, all rows hard-aligned to a single left margin",
+   "Secondary facts live in a right-hand margin column as annotations, never as pills or cards",
+   "Every major rule is printed twice, green out of register with black - two real plates, not a CSS paper texture"
+  ],
+  "rules": [
+   {
+    "name": "The Two Ink Rule",
+    "body": "The system has exactly two inks. Every colour decision is \"black or green\", never \"which green\" or \"what about a third accent\". A gradient, a tint ramp, or a second accent hue is a violation of the material, not an enrichment of it.",
+    "section": "colors"
+   },
+   {
+    "name": "The Green Owns The Apparatus Rule",
+    "body": "The overprint carries the grammar's apparatus \u2014 marks, parses, labels, annotations, states \u2014 and never the text being annotated. If green is setting a sentence a reader is meant to read straight through, it is in the wrong place.",
+    "section": "colors"
+   },
+   {
+    "name": "The Cool Stock Rule",
+    "body": "The ground is cool duplicator grey. Cream, parchment, kraft and lamplight are this world's softest rendition and are explicitly out of the system.",
+    "section": "colors"
+   },
+   {
+    "name": "The Typed Example Rule",
+    "body": "Anything the machine produced or that is notation \u2014 glosses, indices, labels, measurements, section marks \u2014 is set in Courier Prime. Anything a human wrote \u2014 prose, headings, free translations \u2014 is set in Alegreya. The two faces are a semantic distinction, not decoration; do not mix them for visual interest.",
+    "section": "typography"
+   },
+   {
+    "name": "The Real Small Caps Rule",
+    "body": "Morpheme parses use Alegreya's true small capitals. Uppercase text scaled down is not an acceptable substitute: the stroke weights no longer match the surrounding roman, which is exactly what the convention exists to preserve.",
+    "section": "typography"
+   },
+   {
+    "name": "The Gloss Over Translation Rule",
+    "body": "In any interlinear unit the order is fixed \u2014 typed gloss form, then parse, then free translation in single quotes \u2014 and all three hang from the same left edge. The order is the notation; it is not a layout preference.",
+    "section": "typography"
+   },
+   {
+    "name": "The One Left Margin Rule",
+    "body": "Every row of an interlinear unit, and every block in the text column, aligns to a single left margin. Nothing in this world is centred \u2014 not a heading, not a hero, not a call to action, not the page block itself.",
+    "section": "layout"
+   },
+   {
+    "name": "The Margin Is Not A Card Rule",
+    "body": "Secondary facts go in the margin column as annotations. When the layout narrows they fold under the text they annotate and stay annotations. They never acquire a background, a border box, an icon or a radius on the way down.",
+    "section": "layout"
+   },
+   {
+    "name": "The Action Closes The Line Rule",
+    "body": "The primary action sits inline at the end of the sentence that explains the product, on its baseline, rather than in a detached button row. Buttons in this world are set as grammar, not as chrome.",
+    "section": "layout"
+   },
+   {
+    "name": "The No Shadow Rule",
+    "body": "Nothing in this world casts a shadow, at rest or on hover. If a surface needs to separate from what is behind it, it takes a rule or it takes the other ink.",
+    "section": "elevation"
+   },
+   {
+    "name": "The Two Plates Rule",
+    "body": "Misregistration requires two plates that disagree. It is built by printing a rule twice - black from the element's border, green from its ::after - never by offsetting a single coloured element, which moves it without misregistering anything. Paper texture, grain overlays, noise filters, scanned-paper images and simulated toner speckle are not part of this system.",
+    "section": "elevation"
+   },
+   {
+    "name": "The Three Weights Rule",
+    "body": "Rules come in exactly three weights: 1px ink for structural division, 1px rule (22%) for secondary containment, 1px rule-hair (12%) for row separation. A fourth weight, or a rule thicker than 1px, is drift.",
+    "section": "elevation"
+   },
+   {
+    "name": "The Square Rule",
+    "body": "Radius is zero on every element in this world, including focus rings and including anything inherited from an unconverted component. A rounded corner here is not a style choice, it is a foreign body from the world this one replaced.",
+    "section": "shapes"
+   }
+  ],
+  "dos": [
+   "Do set anything the machine produced \u2014 glosses, indices, labels, measurements \u2014 in Courier Prime, and anything a human wrote in Alegreya.",
+   "Do use real small capitals (font-variant-caps: small-caps) for morpheme parses.",
+   "Do align every row of an interlinear unit to one left margin, in the fixed order: gloss form, parse, free translation in single quotes.",
+   "Do give the overprint the apparatus \u2014 section marks, labels, annotations, hover, focus, selection \u2014 and keep it off running prose.",
+   "Do keep radius at 0 on every element, including focus rings and anything inherited from an unconverted component.",
+   "Do carry structure on the three declared rule weights: 1px ink, 1px rule, 1px rule-hair.",
+   "Do put secondary facts in the margin column as annotations, and let them fold under the text they annotate on narrow screens.",
+   "Do self-host any face this world uses; a render-blocking font CDN breaks the product's binding no-network startup condition.",
+   "Do keep a visible focus indicator on every interactive element \u2014 the base reset removes outlines, so :focus-visible restores them deliberately.",
+   "Do scope a converted screen's tokens explicitly until the whole app has moved, so the two worlds can coexist without leaking into each other."
+  ],
+  "donts": [
+   "Don't introduce a gradient, a pill, an icon tile, a card grid or a centred column. All five were removed on purpose and none may return.",
+   "Don't add a third ink or an accent hue. The palette is black, green, stock.",
+   "Don't add a drop shadow, a hover lift, a scale or a glow. Depth is rules and ink.",
+   "Don't fake the material with paper textures, grain overlays, noise filters or scanned-paper images. The misregistration transform is the only material effect in the system and it is real geometry.",
+   "Don't soften this world toward cream, parchment, kraft or lamplight. The stock is cool grey.",
+   "Don't substitute scaled-down uppercase for small capitals.",
+   "Don't set a rule thicker than 1px or invent a fourth rule weight.",
+   "Don't treat any device from the outgoing \"Patient Tutor\" world as a precedent when converting a screen \u2014 it is the world being replaced, not a fallback.",
+   "Don't state a metric the code cannot substantiate. Every number on screen \u2014 vocabulary size, object classes \u2014 must trace to the source, and no accuracy or latency figure exists to cite."
+  ]
+ }
 }
