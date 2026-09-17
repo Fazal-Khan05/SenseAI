@@ -69,8 +69,9 @@ Consequences future work must respect:
 - Live webcam capture with explicit handling for denied permission, absent
   camera, and insecure context.
 - Hand tracking via MediaPipe HandLandmarker (pre-trained, 21 landmarks).
-- Recognition of 11 word-level signs — `HELLO THANK-YOU PLEASE SORRY YES
-  I-LOVE-YOU ME YOU NO HELP GOODBYE` — from handshape combined with movement.
+- Recognition of 8 word-level signs — `HELLO THANK-YOU PLEASE SORRY YES NO
+  I-LOVE-YOU ME` — from a trained handshape classifier combined with
+  rule-based movement segmentation.
 - Gloss-to-English sentence construction, and speech output via the Web Speech API.
 - Object detection via COCO-SSD (80 pre-trained classes) with drawn boxes.
 
@@ -106,7 +107,7 @@ been established.
 
 Real and citable:
 
-- 11 recognised signs, enumerated in `src/lib/wordSigns.js`.
+- 8 recognised signs, enumerated in `src/lib/wordSigns.js`.
 - Three camera-free test suites: `scripts/test-gloss.mjs` (17 sentence cases),
   `scripts/test-motion.mjs` (8 motion classifications), `scripts/test-strokes.mjs`
   (8 full gesture sequences, including the regression for one sign emitting three).
@@ -117,9 +118,9 @@ Real and citable:
 accuracy benchmark, and no user testing. Any accuracy, latency, or vocabulary-size
 figure stated anywhere in the product must be traceable to the code or a real
 measurement. Invented metrics were previously present on the dashboard and
-landing page and were removed deliberately; they must not return. The landing
-page still claims "99% accuracy", "<50ms latency" and "100+ signs" — **these are
-unsubstantiated and need correcting or removing.**
+landing page and were removed deliberately; they must not return. Both surfaces
+are now clean: the landing page states only what the code substantiates, and its
+two glossed examples are asserted against `glossToSentence` in the build.
 
 ## Product Principles
 

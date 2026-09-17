@@ -5,9 +5,15 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Sense AI — Real-time AI-powered sign language and object detection platform. Recognize hand gestures and identify objects using machine learning in your browser." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/alegreya-normal-400-900.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/courier-prime-normal-400.woff2" crossorigin />
+    <!-- Inter still serves the screens not yet converted to the new world.
+         Loaded off the render path so no page blocks on a font CDN. -->
+    <link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+    <noscript><link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" /></noscript>
     <title>Sense AI — AI-Powered Detection Platform</title>
   </head>
   <body>

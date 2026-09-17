@@ -46,7 +46,7 @@ export default function Footer() {
 
                 <div className="footer-bottom">
                     <p>© {new Date().getFullYear()} Sense AI. All rights reserved.</p>
-                    <p>Built with ❤️ using React & Machine Learning</p>
+                    <p>Built with React &amp; machine learning</p>
                 </div>
             </div>
         </footer>

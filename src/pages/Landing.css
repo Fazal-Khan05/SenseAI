@@ -1,596 +1,745 @@
-/* ===== HERO ===== */
-.hero {
+/* ============================================
+   LANDING — THE DESCRIPTIVE GRAMMAR
+   The product's output is interlinear glossed text, so the page is a
+   grammar of the product rather than a page about it. Materials are the
+   mimeographed grammar and the overprinted atlas plate: two inks on cool
+   duplicator stock. No gradient, no pill, no icon tile, no centred column.
+   ============================================ */
+
+.landing {
+    --stock: #E7E8E3;
+    --stock-deep: #DCDED6;
+    --ink: #17181B;
+    --ink-soft: #4A4E52;
+    --overprint: #1D5B3F;
+    --overprint-pale: #BFD3C6;
+    --rule: rgba(23, 24, 27, 0.22);
+    --rule-hair: rgba(23, 24, 27, 0.12);
+
+    --prose: 'Alegreya', Georgia, serif;
+    --typed: 'Courier Prime', ui-monospace, 'Courier New', monospace;
+
+    /* The page's own margin, not the app container's centred one. */
+    --edge: clamp(20px, 5vw, 76px);
+    --margin-col: clamp(180px, 20vw, 260px);
+
+    background: var(--stock);
+    color: var(--ink);
+    font-family: var(--prose);
     min-height: 100vh;
+}
+
+[data-theme="dark"] .landing {
+    --stock: #14161A;
+    --stock-deep: #101217;
+    --ink: #E7E8E3;
+    --ink-soft: #A8AEB0;
+    --overprint: #5FB98A;
+    --overprint-pale: #24402F;
+    --rule: rgba(231, 232, 227, 0.24);
+    --rule-hair: rgba(231, 232, 227, 0.13);
+}
+
+/* ===== BROWSER SURFACES =====
+   The global theme sets these from --primary, which is the blue this page
+   removed; unscoped, the killed colour returns the instant anyone tabs or
+   selects text. Square ring: the world is built on hairline geometry. */
+.landing ::selection {
+    background: var(--overprint);
+    color: var(--stock);
+}
+
+.landing {
+    caret-color: var(--ink);
+}
+
+.landing :where(a, button, input, textarea, select, [tabindex]):focus-visible {
+    outline: 2px solid var(--overprint);
+    outline-offset: 3px;
+    border-radius: 0;
+}
+
+/* ===== SHEET ===== */
+.sheet {
+    max-width: 1320px;
+    margin: 0;
+    padding: 0 var(--edge);
+}
+
+/* ===== RUNNING HEAD ===== */
+.running-head {
     display: flex;
-    align-items: center;
-    padding-top: 80px;
-    position: relative;
-    overflow: hidden;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 24px;
+    padding-top: 104px;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 10px;
 }
 
-.hero-bg-shapes {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.shape {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.15;
-}
-
-.shape-1 {
-    width: 600px;
-    height: 600px;
-    background: var(--primary);
-    top: -200px;
-    right: -100px;
-}
-
-.shape-2 {
-    width: 400px;
-    height: 400px;
-    background: var(--secondary);
-    bottom: -100px;
-    left: -100px;
-}
-
-.shape-3 {
-    width: 300px;
-    height: 300px;
-    background: var(--accent);
-    top: 40%;
-    left: 50%;
-}
-
-.hero-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-}
-
-.hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(79, 156, 249, 0.1);
-    color: var(--primary);
-    padding: 8px 18px;
-    border-radius: var(--radius-full);
-    font-size: var(--fs-sm);
-    font-weight: 600;
-    margin-bottom: 24px;
-}
-
-.hero-content h1 {
-    font-size: var(--fs-5xl);
-    font-weight: 800;
-    line-height: 1.15;
-    letter-spacing: -1px;
-    margin-bottom: 20px;
-}
-
-.hero-sub {
-    font-size: var(--fs-lg);
-    color: var(--text-secondary);
-    line-height: 1.7;
-    margin-bottom: 32px;
-    max-width: 520px;
-}
-
-.hero-actions {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-bottom: 48px;
-}
-
-
-
-
-
-
-/* ===== HERO ILLUSTRATION ===== */
-.hero-visual {
-    display: flex;
-    justify-content: center;
-}
-
-.hero-illustration {
-    position: relative;
-    width: 420px;
-    height: 420px;
-}
-
-.hero-card-float {
-    position: absolute;
-    background: var(--card);
-    border-radius: var(--radius-md);
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: var(--shadow-lg);
-    font-size: var(--fs-sm);
-    font-weight: 500;
-    border: 1px solid var(--border-subtle);
-    z-index: 2;
-}
-
-.hero-card-float .card-icon {
-    color: var(--primary);
-}
-
-.hero-card-float .confidence {
-    color: var(--success);
+.running-head .rh-title {
+    font-family: var(--typed);
+    font-size: 0.8rem;
     font-weight: 700;
-    font-size: var(--fs-xs);
-    background: rgba(16, 185, 129, 0.1);
-    padding: 2px 8px;
-    border-radius: var(--radius-full);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink);
 }
 
-.hero-card-1 {
-    top: 60px;
-    right: 0;
+.running-head .rh-section {
+    font-family: var(--typed);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    color: var(--overprint);
 }
 
-.hero-card-2 {
-    bottom: 80px;
-    left: 0;
+/* ===== EXAMPLE BLOCK — the interlinear unit =====
+   Three rows hard-aligned on one left margin: typed gloss, morpheme
+   analysis, free translation. This is the page's atom. */
+.example {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: clamp(14px, 2vw, 30px);
+    align-items: start;
 }
 
-.hero-orb {
-    position: absolute;
-    border-radius: 50%;
-    z-index: 1;
+.example-number {
+    font-family: var(--typed);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    padding-top: 0.55em;
+    font-variant-numeric: tabular-nums;
 }
 
-.hero-orb-1 {
-    width: 200px;
-    height: 200px;
-    background: linear-gradient(135deg, rgba(79, 156, 249, 0.2), rgba(160, 132, 232, 0.2));
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.hero-orb-2 {
-    width: 300px;
-    height: 300px;
-    background: linear-gradient(135deg, rgba(79, 156, 249, 0.08), rgba(255, 107, 129, 0.08));
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 2px dashed rgba(79, 156, 249, 0.15);
-}
-
-.hero-center-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: var(--gradient-primary);
+.gloss-line {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    box-shadow: 0 8px 32px rgba(79, 156, 249, 0.3);
-    z-index: 2;
+    flex-wrap: wrap;
+    column-gap: clamp(20px, 3.2vw, 52px);
+    row-gap: 4px;
+}
+
+.gloss-token {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.gloss-form {
+    overflow-wrap: anywhere;
+    font-family: var(--typed);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    color: var(--ink);
+}
+
+.gloss-parse {
+    font-family: var(--prose);
+    font-variant-caps: small-caps;
+    font-feature-settings: 'smcp' 1;
+    font-size: 0.78em;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    color: var(--overprint);
+    margin-top: 0.3em;
+}
+
+.free-translation {
+    font-family: var(--prose);
+    font-style: italic;
+    color: var(--ink);
+    margin-top: 0.5em;
+}
+
+/* Hero example runs at display scale. */
+.example-lead {
+    margin-top: clamp(40px, 7vh, 88px);
+}
+
+.example-lead .gloss-form {
+    font-size: clamp(2rem, 6.2vw, 4.4rem);
+}
+
+.example-lead .free-translation {
+    font-size: clamp(1.5rem, 3.6vw, 2.6rem);
+    line-height: 1.25;
+    margin-top: 0.34em;
+}
+
+.example-lead .example-number {
+    font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+}
+
+/* ===== HERO ===== */
+.grammar-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--margin-col);
+    gap: clamp(28px, 5vw, 72px);
+    padding-bottom: clamp(56px, 9vh, 104px);
+    border-bottom: 1px solid var(--ink);
+}
+
+.hero-statement {
+    max-width: 34ch;
+    margin-top: clamp(28px, 4vh, 44px);
+    font-size: clamp(1.15rem, 1.7vw, 1.4rem);
+    line-height: 1.55;
+    color: var(--ink);
+}
+
+.act-inline {
+    display: inline-block;
+    vertical-align: baseline;
+    margin-left: 6px;
+    transform: translateY(1px);
+}
+
+.hero-secondary {
+    margin-top: clamp(20px, 3vh, 30px);
+}
+
+.act-text {
+    font-family: var(--typed);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 3px;
+    transition: color 160ms ease, border-color 160ms ease;
+}
+
+.act-text:hover {
+    color: var(--overprint);
+    border-bottom-color: var(--overprint);
+}
+
+.hero-action-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px 20px;
+    margin-top: clamp(22px, 3vh, 34px);
+}
+
+/* ===== MARGINAL ANNOTATIONS =====
+   A grammar annotates in its margin. This is what replaces badge pills. */
+.marginalia {
+    border-left: 1px solid var(--rule);
+    padding-left: clamp(14px, 1.6vw, 22px);
+    margin-top: clamp(40px, 7vh, 88px);
+    display: grid;
+    gap: 20px;
+    align-content: start;
+}
+
+.margin-note {
+    font-family: var(--typed);
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--overprint);
+}
+
+.margin-note b {
+    display: block;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    color: var(--overprint);
+}
+
+/* ===== ACTIONS — set as grammar, not as chrome ===== */
+.act {
+    font-family: var(--typed);
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 12px 22px;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--stock);
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.act:hover {
+    background: var(--overprint);
+    border-color: var(--overprint);
+    color: var(--stock);
+}
+
+.act-quiet {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--rule);
+}
+
+.act-quiet:hover {
+    background: transparent;
+    color: var(--overprint);
+    border-color: var(--overprint);
 }
 
 /* ===== SECTIONS ===== */
-.section-alt {
-    background: var(--bg-alt);
+.grammar-section {
+    padding: clamp(56px, 9vh, 104px) 0;
+    border-bottom: 1px solid var(--ink);
 }
 
-.section-header {
-    text-align: center;
-    margin-bottom: 48px;
-}
-
-.section-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(79, 156, 249, 0.1);
-    color: var(--primary);
-    padding: 8px 18px;
-    border-radius: var(--radius-full);
-    font-size: var(--fs-sm);
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.section-badge.accent {
-    background: rgba(255, 107, 129, 0.1);
-    color: var(--accent);
-}
-
-.section-cta {
-    text-align: center;
-    margin-top: 48px;
-}
-
-/* ===== INFO GRID ===== */
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-}
-
-.info-card {
-    text-align: center;
-    padding: 40px 28px;
-}
-
-.info-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: var(--radius-md);
-    background: rgba(79, 156, 249, 0.1);
-    color: var(--primary);
+.section-mark {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-}
-
-.info-icon.accent {
-    background: rgba(255, 107, 129, 0.1);
-    color: var(--accent);
-}
-
-.info-card h3 {
-    font-size: var(--fs-lg);
-    font-weight: 700;
-    margin-bottom: 12px;
-}
-
-.info-card p {
-    font-size: var(--fs-sm);
-    color: var(--text-secondary);
-    line-height: 1.7;
-}
-
-/* ===== STEPS ===== */
-.steps-grid {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 0;
-}
-
-.step-card {
-    text-align: center;
-    padding: 32px 20px;
-    position: relative;
-    flex: 1;
-    max-width: 240px;
-}
-
-.step-number {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--gradient-primary);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: var(--fs-sm);
-    margin: 0 auto 16px;
-}
-
-.step-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: var(--radius-lg);
-    background: rgba(79, 156, 249, 0.08);
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 16px;
-}
-
-.step-card h3 {
-    font-size: var(--fs-base);
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-
-.step-card p {
-    font-size: var(--fs-sm);
-    color: var(--text-secondary);
-}
-
-.step-connector {
-    width: 60px;
-    height: 2px;
-    background: var(--border);
-    margin-top: 78px;
-    flex-shrink: 0;
-    position: relative;
-}
-
-.step-connector::after {
-    content: '';
-    position: absolute;
-    right: -4px;
-    top: -3px;
-    width: 8px;
-    height: 8px;
-    border-right: 2px solid var(--primary);
-    border-top: 2px solid var(--primary);
-    transform: rotate(45deg);
-}
-
-/* ===== FEATURES ===== */
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-}
-
-.feature-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    padding: 32px;
-}
-
-.feature-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: var(--radius-md);
-    background: var(--gradient-primary);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.feature-card h3 {
-    font-size: var(--fs-lg);
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-
-.feature-card p {
-    font-size: var(--fs-sm);
-    color: var(--text-secondary);
-    line-height: 1.7;
-}
-
-/* ===== CTA SECTION ===== */
-.cta-section {
-    background: var(--gradient-primary);
-    padding: 80px 0;
-    position: relative;
-    overflow: hidden;
-}
-
-.cta-bg-shapes {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-}
-
-.cta-shape {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.cta-shape-1 {
-    width: 400px;
-    height: 400px;
-    top: -200px;
-    right: -100px;
-}
-
-.cta-shape-2 {
-    width: 300px;
-    height: 300px;
-    bottom: -150px;
-    left: -50px;
-}
-
-.cta-content {
-    text-align: center;
-    position: relative;
-    z-index: 1;
-}
-
-.cta-content h2 {
-    font-size: var(--fs-4xl);
-    font-weight: 800;
-    color: white;
-    margin-bottom: 16px;
-}
-
-.cta-content p {
-    font-size: var(--fs-lg);
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 32px;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.cta-actions {
-    display: flex;
+    align-items: baseline;
     gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
+    margin-bottom: clamp(26px, 4vh, 40px);
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 968px) {
-    .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-        text-align: center;
-    }
-
-    .hero-sub {
-        max-width: 100%;
-    }
-
-    .hero-actions {
-        justify-content: center;
-    }
-
-
-    .hero-visual {
-        display: none;
-    }
+.section-mark .mark {
+    font-family: var(--typed);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    color: var(--overprint);
+    white-space: nowrap;
 }
 
-@media (max-width: 768px) {
-    .info-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .features-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .steps-grid {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .step-connector {
-        width: 2px;
-        height: 40px;
-        margin: 0;
-    }
-
-    .step-connector::after {
-        right: -3px;
-        top: auto;
-        bottom: -4px;
-        transform: rotate(135deg);
-    }
-}
-/* Solid button for use on top of the gradient CTA band */
-.btn-on-gradient {
-    background: #FFFFFF;
-    color: var(--primary);
-    box-shadow: var(--shadow-md);
-}
-
-.btn-on-gradient:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-/* ===== HERO FACTS =====
-   Replaces the old big-number stat row. Checkable statements, not metrics. */
-.hero-facts {
-    display: grid;
-    gap: 10px;
-    margin-top: 36px;
-    padding-top: 28px;
-    border-top: 1px solid var(--border-subtle);
-    max-width: 46ch;
-}
-
-.hero-facts li {
-    position: relative;
-    padding-left: 26px;
-    font-size: var(--fs-sm);
-    line-height: 1.6;
-    color: var(--text-secondary);
-}
-
-.hero-facts li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.55em;
-    width: 12px;
-    height: 2px;
-    border-radius: 1px;
-    background: var(--gradient-primary);
-}
-
-/* ===== HERO PROOF CARDS =====
-   The product's real output: gloss in, English out. */
-.hero-card-float .hero-gloss {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: var(--fs-xs);
-    letter-spacing: 0.08em;
-    color: var(--text-muted);
-}
-
-.hero-card-float .hero-arrow {
-    color: var(--text-muted);
-    font-size: var(--fs-xs);
-    line-height: 1;
-}
-
-.hero-card-float strong {
-    font-size: var(--fs-sm);
-    font-weight: 600;
-    color: var(--text);
-}
-
-/* ===== SIGN INVENTORY =====
-   States the eight-sign limit plainly. Not headlined, not hidden. */
-.sign-inventory {
-    max-width: 62ch;
-    margin: 48px auto 0;
-    padding: 28px 32px;
-    background: var(--card);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-}
-
-.sign-inventory h3 {
-    font-size: var(--fs-base);
+.section-mark h2 {
+    overflow-wrap: anywhere;
+    font-family: var(--prose);
+    font-size: clamp(1.5rem, 2.8vw, 2.1rem);
     font-weight: 700;
-    color: var(--text);
-    margin-bottom: 14px;
+    line-height: 1.15;
+    color: var(--ink);
 }
 
-.sign-inventory-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
+.section-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--margin-col);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: start;
 }
 
-.sign-inventory-list li {
-    padding: 5px 12px;
-    border-radius: var(--radius-full);
-    background: var(--primary-ghost);
-    color: var(--primary);
-    font-size: var(--fs-xs);
-    font-weight: 600;
-    letter-spacing: 0.02em;
+.prose-block {
+    max-width: 62ch;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--ink);
 }
 
-.sign-inventory p {
-    font-size: var(--fs-sm);
+.prose-block p + p {
+    margin-top: 1em;
+}
+
+/* ===== NUMBERED CLAIM LIST — replaces the icon-tile grid =====
+   Entries in a grammar are hanging-indented runs of text, not cards. */
+.entry-list {
+    display: grid;
+    gap: 0;
+    margin-top: clamp(22px, 3vh, 34px);
+}
+
+.entry {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: clamp(14px, 2vw, 28px);
+    padding: 18px 0;
+    border-top: 1px solid var(--rule-hair);
+}
+
+.entry:last-child {
+    border-bottom: 1px solid var(--rule-hair);
+}
+
+.entry-label {
+    font-family: var(--typed);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--overprint);
+    padding-top: 0.2em;
+    white-space: nowrap;
+}
+
+.entry-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink);
+}
+
+.entry-text strong {
+    font-weight: 700;
+}
+
+/* ===== INVENTORY — the eight signs as a paradigm table ===== */
+.paradigm {
+    margin-top: clamp(22px, 3vh, 34px);
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+}
+
+.paradigm-row {
+    display: grid;
+    grid-template-columns: 2.2rem minmax(0, 8rem) minmax(0, 1.6fr);
+    column-gap: clamp(12px, 2vw, 26px);
+    align-items: baseline;
+    padding: 11px 0;
+}
+
+.paradigm-row + .paradigm-row {
+    border-top: 1px solid var(--rule-hair);
+}
+
+.paradigm-index {
+    font-family: var(--typed);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+}
+
+.paradigm-form {
+    font-family: var(--typed);
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+}
+
+.paradigm-note {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+}
+
+.paradigm-caption {
+    margin-top: 12px;
+    font-family: var(--typed);
+    font-size: 0.76rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+}
+
+/* ===== OVERPRINT BAND — the one region the second ink owns outright ===== */
+.overprint-band {
+    background: var(--overprint);
+    color: var(--stock);
+    padding: clamp(56px, 9vh, 104px) 0;
+}
+
+.overprint-band > .sheet {
+    padding: 0 var(--edge);
+}
+
+.overprint-band .example-number,
+.overprint-band .paradigm-index {
+    color: rgba(231, 232, 227, 0.72);
+}
+
+.overprint-band .gloss-form,
+.overprint-band .free-translation {
+    color: var(--stock);
+}
+
+.overprint-band .gloss-parse {
+    color: var(--overprint-pale);
+}
+
+[data-theme="dark"] .overprint-band {
+    color: #0F1116;
+}
+
+[data-theme="dark"] .overprint-band .gloss-form,
+[data-theme="dark"] .overprint-band .free-translation {
+    color: #0F1116;
+}
+
+[data-theme="dark"] .overprint-band .gloss-parse {
+    color: rgba(15, 17, 22, 0.72);
+}
+
+[data-theme="dark"] .overprint-band .example-number {
+    color: rgba(15, 17, 22, 0.66);
+}
+
+.band-heading {
+    font-family: var(--prose);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    max-width: 22ch;
+    margin-bottom: clamp(24px, 4vh, 36px);
+}
+
+.overprint-band .act {
+    background: var(--stock);
+    border-color: var(--stock);
+    color: var(--overprint);
+}
+
+.overprint-band .act:hover {
+    background: transparent;
+    color: var(--stock);
+    border-color: var(--stock);
+}
+
+/* ===== COLOPHON ===== */
+.colophon {
+    padding: clamp(40px, 6vh, 64px) 0 clamp(56px, 8vh, 88px);
+    font-family: var(--typed);
+    font-size: 0.78rem;
     line-height: 1.7;
-    color: var(--text-secondary);
+    color: var(--ink-soft);
+    max-width: 60ch;
 }
 
-@media (max-width: 768px) {
-    .sign-inventory {
-        padding: 24px;
+/* ===== RESPONSIVE =====
+   The margin column folds under the text it annotates, which is what a
+   narrow grammar page does; it never becomes a card. */
+@media (max-width: 900px) {
+
+    .grammar-hero,
+    .section-body {
+        grid-template-columns: minmax(0, 1fr);
     }
+
+    .marginalia {
+        margin-top: clamp(26px, 4vh, 36px);
+        border-left: 0;
+        border-top: 1px solid var(--rule);
+        padding-left: 0;
+        padding-top: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+    }
+
+    .running-head {
+        padding-top: 88px;
+    }
+}
+
+@media (max-width: 560px) {
+    .example {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 6px;
+    }
+
+    .example-number {
+        padding-top: 0;
+    }
+
+    .gloss-line {
+        column-gap: 26px;
+    }
+
+    .paradigm-row {
+        grid-template-columns: 1.8rem minmax(0, 1fr);
+        row-gap: 3px;
+    }
+
+    .paradigm-note {
+        grid-column: 2;
+    }
+}
+
+/* ============================================
+   NAV AND FOOTER IN THE GRAMMAR'S VOCABULARY
+   A stock component inside a committed form is a lapse, so the page's
+   chrome is rebuilt here rather than inherited. Scoped to .landing: the
+   rest of the app still runs the incumbent world until it is converted.
+   ============================================ */
+
+.landing .navbar {
+    padding: 18px 0;
+    background: transparent;
+}
+
+.landing .navbar.navbar-solid {
+    background: var(--stock);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    border-bottom: 1px solid var(--rule-hair);
+    padding: 12px 0;
+}
+
+.landing .navbar-inner {
+    max-width: 1320px;
+    padding: 0 var(--edge);
+}
+
+/* The wordmark is set as a running head, not a logo lockup. */
+.landing .logo-icon {
+    display: none;
+}
+
+.landing .logo-text {
+    font-family: var(--typed);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink);
+}
+
+.landing .logo-accent {
+    color: var(--overprint);
+    -webkit-text-fill-color: var(--overprint);
+    background: none;
+}
+
+.landing .nav-link {
+    font-family: var(--typed);
+    font-size: 0.76rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-radius: 0;
+    padding: 6px 0;
+    margin: 0 14px;
+    border-bottom: 1px solid transparent;
+}
+
+.landing .nav-link:hover {
+    color: var(--overprint);
+    background: transparent;
+    border-bottom-color: var(--overprint);
+}
+
+.landing .theme-toggle-btn {
+    border-radius: 0;
+    color: var(--ink-soft);
+}
+
+.landing .theme-toggle-btn:hover {
+    color: var(--overprint);
+    background: transparent;
+}
+
+/* Nav actions take the page's own action grammar: squared, typed, ruled. */
+.landing .navbar-actions .btn,
+.landing .nav-actions-mobile .btn {
+    font-family: var(--typed);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 0;
+    padding: 9px 16px;
+    background: transparent;
+    box-shadow: none;
+    border: 1px solid var(--rule);
+    color: var(--ink);
+}
+
+.landing .navbar-actions .btn-primary,
+.landing .nav-actions-mobile .btn-primary {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--stock);
+}
+
+.landing .navbar-actions .btn:hover,
+.landing .nav-actions-mobile .btn:hover {
+    transform: none;
+    background: var(--overprint);
+    border-color: var(--overprint);
+    color: var(--stock);
+    box-shadow: none;
+}
+
+.landing .navbar-links.open {
+    background: var(--stock);
+}
+
+.landing .navbar-toggle {
+    border-radius: 0;
+    color: var(--ink);
+}
+
+/* ===== FOOTER ===== */
+.landing .footer {
+    background: var(--stock);
+    color: var(--ink-soft);
+    border-top: 1px solid var(--ink);
+    padding: clamp(44px, 7vh, 72px) 0 32px;
+}
+
+.landing .footer .container {
+    max-width: 1320px;
+    padding: 0 var(--edge);
+}
+
+.landing .footer-logo .logo-icon {
+    display: none;
+}
+
+.landing .footer-desc,
+.landing .footer-col a,
+.landing .footer-col span,
+.landing .footer-bottom p {
+    font-family: var(--typed);
+    font-size: 0.76rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+}
+
+.landing .footer-col h4 {
+    font-family: var(--typed);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--overprint);
+    margin-bottom: 10px;
+}
+
+.landing .footer-col a:hover {
+    color: var(--overprint);
+}
+
+.landing .social-link {
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin-right: 22px;
+    color: var(--ink-soft);
+    border-bottom: 1px solid transparent;
+}
+
+.landing .social-link:hover {
+    background: transparent;
+    color: var(--overprint);
+    border-bottom-color: var(--overprint);
+    transform: none;
+}
+
+.landing .footer-bottom {
+    border-top: 1px solid var(--rule-hair);
+    margin-top: 32px;
+    padding-top: 20px;
+    text-align: left;
+}
+
+.landing .footer-bottom p {
+    text-align: left;
+}
+
+/* FIX 5 (partial) — plate misregistration. The green sits a hair off the
+   black, which is the most legible signal of a two-plate overprint. This is
+   a real offset, not a texture faked in CSS. */
+.landing .section-mark .mark,
+.landing .rh-section,
+.landing .entry-label,
+.landing .margin-note b {
+    transform: translate(-0.6px, -0.5px);
+}
+
+.overprint-band {
+    box-shadow: inset 0 2px 0 rgba(23, 24, 27, 0.16);
 }

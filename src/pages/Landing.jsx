@@ -1,248 +1,278 @@
 import Navbar from '../components/Navbar';
-import { SIGN_GLOSSES } from '../lib/wordSigns';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
-import {
-    Hand, ScanSearch, Zap, ShieldCheck, Cpu, Layout,
-    UserPlus, KeyRound, MousePointerClick, Activity,
-    ArrowRight, Sparkles, Eye, MessageSquare, Layers
-} from 'lucide-react';
+import { SIGN_GLOSSES, SIGN_HINTS } from '../lib/wordSigns';
 import './Landing.css';
+
+/**
+ * The landing page is written as a descriptive grammar of the product.
+ *
+ * Sense AI's output is interlinear glossed text — gloss over translation,
+ * morpheme-aligned — which is a typographic form with centuries of use behind
+ * it. So the page is a grammar of the thing rather than a page about it:
+ * numbered examples, a paradigm table, hanging entries, marginal annotations.
+ * Every example below is output the engine actually produces.
+ */
+
+/** Gloss rows carry a morpheme parse, the way a real interlinear line does. */
+const LEAD_EXAMPLE = [
+    { form: 'ME', parse: '1sg' },
+    { form: 'SORRY', parse: 'apologise' },
+];
+
+const BAND_EXAMPLE = [
+    { form: 'I-LOVE-YOU', parse: '1sg-love-2sg' },
+];
+
+function Example({ number, tokens, translation, className = '' }) {
+    return (
+        <div className={`example ${className}`.trim()}>
+            <span className="example-number">({number})</span>
+            <div>
+                <div className="gloss-line">
+                    {tokens.map(t => (
+                        <span key={t.form} className="gloss-token">
+                            <span className="gloss-form">{t.form}</span>
+                            <span className="gloss-parse">{t.parse}</span>
+                        </span>
+                    ))}
+                </div>
+                <p className="free-translation">‘{translation}’</p>
+            </div>
+        </div>
+    );
+}
 
 export default function Landing() {
     return (
         <div className="landing">
             <Navbar transparent />
 
-            {/* ===== HERO ===== */}
-            <section className="hero" id="hero">
-                <div className="hero-bg-shapes">
-                    <div className="shape shape-1"></div>
-                    <div className="shape shape-2"></div>
-                    <div className="shape shape-3"></div>
-                </div>
-                <div className="container hero-grid">
-                    <div className="hero-content animate-slide-left">
-                        <div className="hero-badge">
-                            <Sparkles size={14} />
-                            <span>AI-Powered Platform</span>
-                        </div>
-                        <h1>
-                            AI-Powered <span className="gradient-text">Sign & Object</span> Detection Platform
-                        </h1>
-                        <p className="hero-sub">
-                            Real-time gesture and object recognition using advanced machine learning directly in your browser. No setup required.
+            <div className="sheet">
+                {/* ===== §1 THE HERO, SET AS THE GRAMMAR'S FIRST EXAMPLE ===== */}
+                {/* The nav already carries the wordmark; the running head
+                    carries only the section, as a printed grammar's does. */}
+                <header className="running-head">
+                    <span className="rh-section">§1 · Recognition</span>
+                </header>
+
+                <section className="grammar-hero" id="hero">
+                    <div>
+                        <Example
+                            number="1"
+                            tokens={LEAD_EXAMPLE}
+                            translation="I am sorry."
+                            className="example-lead"
+                        />
+
+                        {/* The action closes the reading line rather than sitting in
+                            a detached button row, as the direction contract specifies. */}
+                        <p className="hero-statement">
+                            Sense AI reads your handshape and the way you move it, then
+                            repairs the grammar ASL leaves out — the dropped article, the
+                            missing copula, the question word that moves to the front.{' '}
+                            <Link to="/sign-detection" className="act act-inline">Start practising</Link>
                         </p>
-                        <div className="hero-actions">
-                            <Link to="/sign-detection" className="btn btn-primary btn-lg">
-                                <Hand size={20} /> Try Sign Language
+
+                        <p className="hero-secondary">
+                            <Link to="/object-detection" className="act-text">
+                                Or try object detection →
                             </Link>
-                            <Link to="/object-detection" className="btn btn-outline btn-lg">
-                                <ScanSearch size={20} /> Try Object Detection
-                            </Link>
-                        </div>
-                        <ul className="hero-facts">
-                            <li>Runs entirely in your browser — video never leaves your device</li>
-                            <li>Recognises {SIGN_GLOSSES.length} signs and builds them into English sentences</li>
-                            <li>No sign-up needed to try it</li>
-                        </ul>
-                    </div>
-
-                    <div className="hero-visual animate-slide-right">
-                        <div className="hero-illustration">
-                            {/* The product's actual output, not invented metrics:
-                                ASL gloss on top, the English it produces below. */}
-                            <div className="hero-card-float hero-card-1 animate-float">
-                                <span className="hero-gloss">ME SORRY</span>
-                                <span className="hero-arrow" aria-hidden="true">↓</span>
-                                <strong>“I am sorry.”</strong>
-                            </div>
-                            <div className="hero-card-float hero-card-2 animate-float" style={{ animationDelay: '0.5s' }}>
-                                <span className="hero-gloss">I-LOVE-YOU</span>
-                                <span className="hero-arrow" aria-hidden="true">↓</span>
-                                <strong>“I love you.”</strong>
-                            </div>
-                            <div className="hero-orb hero-orb-1"></div>
-                            <div className="hero-orb hero-orb-2"></div>
-                            <div className="hero-center-icon">
-                                <Eye size={48} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ===== SIGN LANGUAGE SECTION ===== */}
-            <section className="section" id="sign-language">
-                <div className="container">
-                    <div className="section-header">
-                        <div className="section-badge"><Hand size={16} /> Sign Language</div>
-                        <h2 className="section-title">What is Sign Language Detection?</h2>
-                        <p className="section-subtitle">
-                            Sense AI reads your handshape and the way you move it, then repairs the grammar ASL leaves out — dropped articles, the missing copula, question words that move to the front.
                         </p>
                     </div>
 
-                    <div className="info-grid">
-                        <div className="card info-card animate-fade-in-up stagger-1">
-                            <div className="info-icon"><MessageSquare size={24} /></div>
-                            <h3>Communication Bridge</h3>
-                            <p>Enables seamless communication between hearing and deaf communities by translating gestures to text instantly.</p>
-                        </div>
-                        <div className="card info-card animate-fade-in-up stagger-2">
-                            <div className="info-icon"><Layers size={24} /></div>
-                            <h3>Educational Tool</h3>
-                            <p>Helps students and teachers learn sign language through interactive AI-powered feedback and recognition.</p>
-                        </div>
-                        <div className="card info-card animate-fade-in-up stagger-3">
-                            <div className="info-icon"><Activity size={24} /></div>
-                            <h3>Healthcare Access</h3>
-                            <p>Facilitates better healthcare communication for patients who rely on sign language as their primary means of expression.</p>
-                        </div>
-                    </div>
-
-                    <div className="sign-inventory">
-                        <h3>The signs it recognises today</h3>
-                        <ul className="sign-inventory-list">
-                            {SIGN_GLOSSES.map(g => <li key={g}>{g}</li>)}
-                        </ul>
-                        <p>
-                            Eight signs, chosen because each one stays reliably distinguishable
-                            from the others without a trained model. Fingerspelling and a larger
-                            vocabulary need a trained classifier, which is the next piece of work.
+                    {/* Marginal annotations, the grammar's own device — this is
+                        what replaces the removed badge pills. */}
+                    <aside className="marginalia">
+                        <p className="margin-note">
+                            <b>On device</b>
+                            Inference runs in your browser. No video, frame or landmark
+                            leaves the machine.
                         </p>
-                    </div>
-
-                    <div className="section-cta">
-                        <Link to="/sign-detection" className="btn btn-primary btn-lg">
-                            <Hand size={20} /> Try Sign Detection <ArrowRight size={18} />
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* ===== OBJECT DETECTION SECTION ===== */}
-            <section className="section section-alt" id="object-detection">
-                <div className="container">
-                    <div className="section-header">
-                        <div className="section-badge accent"><ScanSearch size={16} /> Object Detection</div>
-                        <h2 className="section-title">What is Object Detection?</h2>
-                        <p className="section-subtitle">
-                            Object detection identifies and classifies real-world objects using AI-powered image recognition, providing labels and confidence scores in real-time.
+                        <p className="margin-note">
+                            <b>Vocabulary</b>
+                            {SIGN_GLOSSES.length} signs, recognised from handshape and
+                            movement together.
                         </p>
+                        <p className="margin-note">
+                            <b>Access</b>
+                            No account needed to practise.
+                        </p>
+                    </aside>
+                </section>
+
+                {/* ===== §2 WHAT THE MECHANISM IS ===== */}
+                <section className="grammar-section" id="sign-language">
+                    <div className="section-mark">
+                        <span className="mark">§2</span>
+                        <h2>ASL is not English with different hands</h2>
                     </div>
 
-                    <div className="info-grid">
-                        <div className="card info-card animate-fade-in-up stagger-1">
-                            <div className="info-icon accent"><Eye size={24} /></div>
-                            <h3>Visual Recognition</h3>
-                            <p>Identifies 80 everyday object types from your camera feed, using a pre-trained detection model.</p>
+                    <div className="section-body">
+                        <div>
+                            <div className="prose-block">
+                                <p>
+                                    American Sign Language drops articles, omits the copula,
+                                    and moves question words. A recogniser that stops at
+                                    labels hands you a pile of words. Sense AI carries the
+                                    gloss through a grammar and returns a sentence.
+                                </p>
+                            </div>
+
+                            <div className="entry-list">
+                                <div className="entry">
+                                    <span className="entry-label">Handshape</span>
+                                    <p className="entry-text">
+                                        Read by a trained classifier, not by hand-written rules —
+                                        five shapes it can tell apart reliably.
+                                    </p>
+                                </div>
+                                <div className="entry">
+                                    <span className="entry-label">Movement</span>
+                                    <p className="entry-text">
+                                        Segmented into strokes and classified as held, straight,
+                                        circular or repeating. <strong>THANK-YOU and PLEASE are the
+                                            same flat hand</strong> — only the movement separates them.
+                                    </p>
+                                </div>
+                                <div className="entry">
+                                    <span className="entry-label">Grammar</span>
+                                    <p className="entry-text">
+                                        The gloss sequence is repaired into English: articles and
+                                        copula restored, question words fronted.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div className="card info-card animate-fade-in-up stagger-2">
-                            <div className="info-icon accent"><Zap size={24} /></div>
-                            <h3>Real-Time Processing</h3>
-                            <p>Processes video frames in milliseconds, providing instant feedback on detected objects.</p>
-                        </div>
-                        <div className="card info-card animate-fade-in-up stagger-3">
-                            <div className="info-icon accent"><Cpu size={24} /></div>
-                            <h3>Smart Analysis</h3>
-                            <p>Machine learning models continuously improve detection accuracy through advanced neural networks.</p>
-                        </div>
+
+                        <aside className="marginalia">
+                            <p className="margin-note">
+                                <b>Note</b>
+                                Glosses are conventionally set in small capitals, and the
+                                free translation in single quotes. This page follows that
+                                convention throughout.
+                            </p>
+                        </aside>
+                    </div>
+                </section>
+
+                {/* ===== §3 THE PARADIGM — the eight signs, stated plainly ===== */}
+                <section className="grammar-section" id="features">
+                    <div className="section-mark">
+                        <span className="mark">§3</span>
+                        <h2>The paradigm</h2>
                     </div>
 
-                    <div className="section-cta">
-                        <Link to="/object-detection" className="btn btn-accent btn-lg">
-                            <ScanSearch size={20} /> Launch Object Detection <ArrowRight size={18} />
-                        </Link>
+                    <div className="section-body">
+                        <div>
+                            <div className="paradigm">
+                                {SIGN_HINTS.map(({ gloss, hint }, i) => (
+                                    <div key={gloss} className="paradigm-row">
+                                        <span className="paradigm-index">{String(i + 1).padStart(2, '0')}</span>
+                                        <span className="paradigm-form">{gloss}</span>
+                                        <span className="paradigm-note">{hint}</span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <p className="paradigm-caption">
+                                Eight forms. Each stays reliably distinguishable from the others
+                                without a trained movement model. Fingerspelling and a larger
+                                vocabulary need one, which is the next piece of work.
+                            </p>
+                        </div>
+
+                        <aside className="marginalia">
+                            <p className="margin-note">
+                                <b>Object detection</b>
+                                A second mode identifies 80 everyday object types from the
+                                same camera, using a pre-trained model.
+                            </p>
+                        </aside>
+                    </div>
+                </section>
+
+                {/* ===== §4 HOW A SESSION RUNS ===== */}
+                <section className="grammar-section" id="how-it-works">
+                    <div className="section-mark">
+                        <span className="mark">§4</span>
+                        <h2>How a session runs</h2>
+                    </div>
+
+                    <div className="section-body">
+                        <div className="entry-list">
+                            <div className="entry">
+                                <span className="entry-label">01 · Open</span>
+                                <p className="entry-text">
+                                    Allow the camera. The models download once and are cached
+                                    afterwards.
+                                </p>
+                            </div>
+                            <div className="entry">
+                                <span className="entry-label">02 · Sign</span>
+                                <p className="entry-text">
+                                    Make a sign from the paradigm. The reading shows the
+                                    handshape and movement it sees while you hold it.
+                                </p>
+                            </div>
+                            <div className="entry">
+                                <span className="entry-label">03 · Read</span>
+                                <p className="entry-text">
+                                    Recognised signs collect as a gloss line, and the English
+                                    sentence is built beneath it.
+                                </p>
+                            </div>
+                            <div className="entry">
+                                <span className="entry-label">04 · Repeat</span>
+                                <p className="entry-text">
+                                    Coverage records which signs you can produce, so you can see
+                                    what still needs work.
+                                </p>
+                            </div>
+                        </div>
+
+                        <aside className="marginalia">
+                            <p className="margin-note">
+                                <b>Offline</b>
+                                After the first visit the models are cached. A session makes no
+                                network requests at all.
+                            </p>
+                            <p className="margin-note">
+                                <b>Camera</b>
+                                Blocked or unavailable cameras are reported plainly rather than
+                                left spinning.
+                            </p>
+                        </aside>
+                    </div>
+                </section>
+            </div>
+
+            {/* ===== §5 THE CLOSE — the one band the second ink owns ===== */}
+            <section className="overprint-band">
+                <div className="sheet">
+                    <h2 className="band-heading">Practise {SIGN_GLOSSES.length} signs and watch them become sentences.</h2>
+
+                    <Example
+                        number="2"
+                        tokens={BAND_EXAMPLE}
+                        translation="I love you."
+                        className="example-lead"
+                    />
+
+                    <div className="hero-action-line">
+                        <Link to="/sign-detection" className="act">Start practising</Link>
                     </div>
                 </div>
             </section>
 
-            {/* ===== HOW IT WORKS ===== */}
-            <section className="section" id="how-it-works">
-                <div className="container">
-                    <h2 className="section-title">How It Works</h2>
-                    <p className="section-subtitle">Get started with AI-powered detection in just four simple steps</p>
-
-                    <div className="steps-grid">
-                        <div className="step-card animate-fade-in-up stagger-1">
-                            <div className="step-number">1</div>
-                            <div className="step-icon"><UserPlus size={28} /></div>
-                            <h3>Create Account</h3>
-                            <p>Sign up with your email in seconds to get started.</p>
-                        </div>
-                        <div className="step-connector"></div>
-                        <div className="step-card animate-fade-in-up stagger-2">
-                            <div className="step-number">2</div>
-                            <div className="step-icon"><KeyRound size={28} /></div>
-                            <h3>Verify OTP</h3>
-                            <p>Confirm your identity with a simple email verification code.</p>
-                        </div>
-                        <div className="step-connector"></div>
-                        <div className="step-card animate-fade-in-up stagger-3">
-                            <div className="step-number">3</div>
-                            <div className="step-icon"><MousePointerClick size={28} /></div>
-                            <h3>Select Mode</h3>
-                            <p>Choose between sign language or object detection.</p>
-                        </div>
-                        <div className="step-connector"></div>
-                        <div className="step-card animate-fade-in-up stagger-4">
-                            <div className="step-number">4</div>
-                            <div className="step-icon"><Activity size={28} /></div>
-                            <h3>Start Detection</h3>
-                            <p>Launch your camera and get real-time AI recognition.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ===== FEATURES ===== */}
-            <section className="section section-alt" id="features">
-                <div className="container">
-                    <h2 className="section-title">Powerful Features</h2>
-                    <p className="section-subtitle">Everything you need for a seamless AI detection experience</p>
-
-                    <div className="features-grid">
-                        <div className="card feature-card animate-fade-in-up stagger-1">
-                            <div className="feature-icon"><Zap size={28} /></div>
-                            <h3>Real-Time AI Processing</h3>
-                            <p>Blazing fast inference powered by optimized ML models running directly in your browser.</p>
-                        </div>
-                        <div className="card feature-card animate-fade-in-up stagger-2">
-                            <div className="feature-icon"><ShieldCheck size={28} /></div>
-                            <h3>Secure Authentication</h3>
-                            <p>OTP-based verification and encrypted sessions keep your data safe and private.</p>
-                        </div>
-                        <div className="card feature-card animate-fade-in-up stagger-3">
-                            <div className="feature-icon"><Cpu size={28} /></div>
-                            <h3>Browser-Based Engine</h3>
-                            <p>No installations needed. All processing happens locally in your browser for maximum privacy.</p>
-                        </div>
-                        <div className="card feature-card animate-fade-in-up stagger-4">
-                            <div className="feature-icon"><Layout size={28} /></div>
-                            <h3>Intuitive Interface</h3>
-                            <p>Clean, modern design that makes AI detection accessible to everyone, regardless of technical skill.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ===== CTA ===== */}
-            <section className="cta-section">
-                <div className="cta-bg-shapes">
-                    <div className="cta-shape cta-shape-1"></div>
-                    <div className="cta-shape cta-shape-2"></div>
-                </div>
-                <div className="container cta-content">
-                    <h2>Ready to Experience AI?</h2>
-                    <p>Practise {SIGN_GLOSSES.length} signs with live feedback, and watch them become English sentences.</p>
-                    <div className="cta-actions">
-                        <Link to="/signup" className="btn btn-lg btn-on-gradient">
-                            Create Account <ArrowRight size={18} />
-                        </Link>
-                    </div>
-                </div>
-            </section>
+            <div className="sheet">
+                <p className="colophon">
+                    Sense AI is a university project. Recognition is rule-based over a
+                    trained handshape classifier; no accuracy figure is claimed because
+                    none has been measured. Examples (1) and (2) are output the engine
+                    produces from the signs shown.
+                </p>
+            </div>
 
             <Footer />
         </div>

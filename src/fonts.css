@@ -1,0 +1,44 @@
+/* Self-hosted so the landing page's own faces need no third-party request.
+   PRODUCT.md makes "startup must not depend on a network call" a binding
+   demo condition, and a render-blocking font CDN breaks it. Latin subsets
+   only; Alegreya is the variable face, so one file covers 400–900. */
+
+@font-face {
+    font-family: 'Alegreya';
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+    src: url('/fonts/alegreya-normal-400-900.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Alegreya';
+    font-style: italic;
+    font-weight: 400 900;
+    font-display: swap;
+    src: url('/fonts/alegreya-italic-400-900.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Courier Prime';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/courier-prime-normal-400.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Courier Prime';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/courier-prime-normal-700.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Courier Prime';
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/courier-prime-italic-400.woff2') format('woff2');
+}
